@@ -36,7 +36,7 @@ model Servico {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   nome         String   @unique
   descricao    String
-  procedimento String
+  procedimento String?
   duracao      Int
   createAt     DateTime @default(now())
 }
