@@ -19,6 +19,8 @@ const links = [
   },
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
   { name: 'Chat', href: '/dashboard/chat', icon: UserGroupIcon },
+  { name: 'User', href: '/dashboard/user', icon: UserGroupIcon },
+  { name: 'Configurações', href: '/dashboard/config', icon: UserGroupIcon },
 ];
 
 export default function NavLinks() {

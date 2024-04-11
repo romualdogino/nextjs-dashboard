@@ -10,9 +10,12 @@ import {
   LatestInvoicesSkeleton,
   CardsSkeleton
 } from '@/app/ui/skeletons';
+import { createUser, getAll } from '@/prisma/user';
 
 
 export default async function Page() {
+  // let nome = await getAll()
+  // console.log(nome)
   // const revenue = await fetchRevenue();
   // const latestInvoices = await fetchLatestInvoices();
   // const {
