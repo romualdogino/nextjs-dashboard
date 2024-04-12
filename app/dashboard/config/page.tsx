@@ -1,4 +1,5 @@
 import  Form  from '@/app/ui/servicos/create-form'
+import  Lista  from '@/app/ui/servicos/lista'
 
 export default function Page() {
 
@@ -7,6 +8,7 @@ export default function Page() {
         <main>
             <div>
                 <Form />
+                <Lista />
             </div>
         </main>
     )

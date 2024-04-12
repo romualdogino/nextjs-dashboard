@@ -13,6 +13,10 @@ export type State = {
     };
     message?: string | null;
 };
+export async function getallServico() {
+    let servicos = prisma.servico.findMany()
+    return servicos
+}
 export async function createServico(State: State, formData: FormData) {
     // Validate form using Zod
     // const validatedFields = CreateServico.safeParse({
@@ -34,5 +38,6 @@ export async function createServico(State: State, formData: FormData) {
 
             }
         })
+        return servico
     }
 }
