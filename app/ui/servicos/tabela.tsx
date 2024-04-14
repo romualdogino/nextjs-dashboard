@@ -1,54 +1,56 @@
-import Image from 'next/image';
-import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
-import InvoiceStatus from '@/app/ui/invoices/status';
-import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
-import { fetchFilteredInvoices } from '@/app/lib/data';
 
-export default async function ServicoTable({
-  query,
-  currentPage,
-}: {
-  query: string;
-  currentPage: number;
-}) {
-  const invoices = await fetchFilteredInvoices(query, currentPage);
+import Image from 'next/image';
+import { UpdateServico, DeleteServico } from '@/app/ui/servicos/buttons';
+// import InvoiceStatus from '@/app/ui/invoices/status';
+import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
+// import { fetchFilteredInvoices } from '@/app/lib/data';
+import { fetchFilteredServicos } from '@/app/lib/data-mongodb';
+export type Servico = {
+  id: string
+  nome: string
+  descricao: string
+  duracao: number
+
+}
+export default async function ServicoTable(props: any) {
+console.log(props.servicos)
 
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {invoices?.map((invoice) => (
+            {props.servicos?.map((servico :Servico) => (
               <div
-                key={invoice.id}
+                key={servico.id}
                 className="mb-2 w-full rounded-md bg-white p-4"
               >
                 <div className="flex items-center justify-between border-b pb-4">
                   <div>
                     <div className="mb-2 flex items-center">
-                      <Image
-                        src={invoice.image_url}
+                      {/* <Image
+                        src={servico.nome}
                         className="mr-2 rounded-full"
                         width={28}
                         height={28}
-                        alt={`${invoice.name}'s profile picture`}
-                      />
-                      <p>{invoice.name}</p>
+                        alt={`${servico.nome}'s profile picture`}
+                      /> */}
+                      <p>{servico.nome}</p>
                     </div>
-                    <p className="text-sm text-gray-500">{invoice.email}</p>
+                    <p className="text-sm text-gray-500">{servico.nome}</p>
                   </div>
-                  <InvoiceStatus status={invoice.status} />
+                  {/* <InvoiceStatus status={servico.status} /> */}
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
                     <p className="text-xl font-medium">
-                      {formatCurrency(invoice.amount)}
+                      {/* {formatCurrency(servico.amount)} */}
                     </p>
-                    <p>{formatDateToLocal(invoice.date)}</p>
+                    {/* <p>{formatDateToLocal(servico.date)}</p> */}
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateInvoice id={invoice.id} />
-                    <DeleteInvoice id={invoice.id} />
+                    <UpdateServico id={servico.id} />
+                    <DeleteServico id={servico.id} />
                   </div>
                 </div>
               </div>
@@ -58,59 +60,49 @@ export default async function ServicoTable({
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Customer
+                  Nome
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Email
+                  Minutos
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Amount
+                  Descrição
                 </th>
-                <th scope="col" className="px-3 py-5 font-medium">
-                  Date
-                </th>
-                <th scope="col" className="px-3 py-5 font-medium">
-                  Status
-                </th>
+                
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Edit</span>
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white">
-              {invoices?.map((invoice) => (
+              {props.servicos?.map((servico:Servico) => (
                 <tr
-                  key={invoice.id}
+                  key={servico.id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
-                      <Image
-                        src={invoice.image_url}
+                      {/* <Image
+                        src={servico.nome}
                         className="rounded-full"
                         width={28}
                         height={28}
-                        alt={`${invoice.name}'s profile picture`}
-                      />
-                      <p>{invoice.name}</p>
+                        alt={`${servico.nome}'s profile picture`}
+                      /> */}
+                      <p>{servico.nome}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {invoice.email}
+                    {servico.duracao}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {formatCurrency(invoice.amount)}
+                  {servico.descricao}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {formatDateToLocal(invoice.date)}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    <InvoiceStatus status={invoice.status} />
-                  </td>
+                 
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateInvoice id={invoice.id} />
-                      <DeleteInvoice id={invoice.id} />
+                      <UpdateServico id={servico.id} />
+                      <DeleteServico id={servico.id} />
                     </div>
                   </td>
                 </tr>

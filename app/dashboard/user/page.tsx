@@ -4,7 +4,7 @@ import { CreateUsuario } from '@/app/ui/user/buttons';
 import Pagination from '@/app/ui/invoices/pagination';
 import Search from '@/app/ui/search';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
-// import CadastroUser from '@/app/ui/user/user';
+// import CadastroUser from '@/app/ui/user/u ser';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import Table from '@/app/ui/invoices/table';
@@ -14,17 +14,8 @@ export const metadata: Metadata = {
   title: 'Usuários',
 };
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams?: {
-    query?: string;
-    page?: string;
-  };
-}) {
-  const query = searchParams?.query || '';
-  const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = await fetchInvoicesPages(query);
+export default async function Page() {
+
   return (
     
     <div className="w-full">
@@ -36,12 +27,10 @@ export default async function Page({
       <CreateUsuario />
       {/* <CadastroUser /> */}
     </div>
-    <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-      <Table query={query} currentPage={currentPage} />
-    </Suspense>
-    <div className="mt-5 flex w-full justify-center">
-      <Pagination totalPages={totalPages} />
-    </div>
+   
+      <Table />
+  
+
   </div>
   )
 }

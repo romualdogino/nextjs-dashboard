@@ -1,7 +1,14 @@
+import { fetchFilteredServicos } from "@/app/lib/data-mongodb";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import Form from "@/app/ui/user/create-form";
 
 export default async function Page() {
+    const servicos = await fetchFilteredServicos();
+    let serv: string[] = []
+    servicos.map(s=>{
+        serv.push(s.nome)
+    })
+    console.log(serv)
     return (
         <main>
             <Breadcrumbs 
@@ -13,7 +20,7 @@ export default async function Page() {
                     active: true,
                   }
             ]} />
-            <Form />
+            <Form servicos = {serv}/>
         </main>
     )
 }

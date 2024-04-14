@@ -19,7 +19,7 @@ model User {
   name           String
   password       String
   endereco       Endereco?
-  especializacao Especializacao?
+  especializacao Json[]
   createAt       DateTime        @default(now())
 }
 
@@ -67,7 +67,7 @@ type Endereco {
   cidade String
 }
 
-type Especializacao {
-  nome      String
-  descricao String
-}
+// type Especializacao {
+//   nome      String
+//   descricao String
+// }

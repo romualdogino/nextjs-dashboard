@@ -6,11 +6,11 @@ import { Button } from "../button";
 
 export default function Form() {
     const initialState = { message: null, errors: {} };
-    const [state, dispatch] = useFormState(createServico, null);
+    const [state, dispatch] = useFormState(createServico, initialState);
 
     return (
-        < div className='grid grid-flow-col h-screen' >
-            <form action={dispatch} method="post">
+        < div className='grid grid-flow-col' >
+            <form action={dispatch}>
                 <div className="rounded-md bg-gray-50 p-4 md:p-6">
                     {/* Customer Name */}
                     <div className="mb-4">

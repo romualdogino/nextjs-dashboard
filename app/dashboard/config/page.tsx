@@ -8,7 +8,7 @@ export default function Page() {
         <main>
             <div>
                 <Form />
-                <Lista />
+                <Lista /> 
             </div>
         </main>
     )
