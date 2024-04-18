@@ -1,6 +1,6 @@
 import { fetchFilteredServicos } from "@/app/lib/data-mongodb";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
-import Form from "@/app/ui/user/create-form";
+import Form from "@/app/ui/cliente/create-form";
 
 export default async function Page() {
     const servicos = await fetchFilteredServicos();
@@ -13,10 +13,10 @@ export default async function Page() {
         <main>
             <Breadcrumbs 
             breadcrumbs={[
-                {label: "Usuários", href: '/dashboard/user'},
+                {label: "Cliente", href: '/dashboard/cliente'},
                 {
-                    label: 'Criar Usuário',
-                    href: '/dashboard/user/criar',
+                    label: 'Criar Cliente',
+                    href: '/dashboard/cliente/criar',
                     active: true,
                   }
             ]} />

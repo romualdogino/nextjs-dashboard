@@ -21,6 +21,7 @@ const links = [
   { name: 'Chat', href: '/dashboard/chat', icon: UserGroupIcon },
   { name: 'User', href: '/dashboard/user', icon: UserGroupIcon },
   { name: 'Configurações', href: '/dashboard/config', icon: UserGroupIcon },
+  { name: 'Cliente', href: '/dashboard/cliente', icon: UserGroupIcon },
 ];
 
 export default function NavLinks() {

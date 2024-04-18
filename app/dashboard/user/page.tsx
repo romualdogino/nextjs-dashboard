@@ -7,7 +7,8 @@ import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 // import CadastroUser from '@/app/ui/user/u ser';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import Table from '@/app/ui/invoices/table';
+import UserTable from '@/app/ui/user/tabela';
+import { fetchFilteredServicos, fetchFilteredUser } from '@/app/lib/data-mongodb';
 
 
 export const metadata: Metadata = {
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-
+  const users = await fetchFilteredUser();
   return (
     
     <div className="w-full">
@@ -28,7 +29,7 @@ export default async function Page() {
       {/* <CadastroUser /> */}
     </div>
    
-      <Table />
+      <UserTable servicos={users}/>
   
 
   </div>

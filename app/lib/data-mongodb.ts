@@ -10,7 +10,17 @@ import { json } from 'stream/consumers';
 
 const prisma = new PrismaClient()
 
-
+export async function fetchCliente(id: string) {
+  console.log(id + "aqui")
+  try {
+    let cliente = await prisma.cliente.findUnique({
+      where: { id: id }
+    })
+    return cliente
+  } catch (error) {
+    console.log("error")
+  }
+}
 // export async function fetchInvoicesPages(query: string) {
 //   noStore();
 //   try {
@@ -36,6 +46,49 @@ const prisma = new PrismaClient()
 export type User = {
   nome: string, cpf: string, fone: string, email: string, senha: string, setorId: string
 }
+export async function createPet(prevState: State, formData: FormData) {
+  console.log(formData)
+  // var user: any = {}
+
+  // formData.forEach((value, key) => {
+  //   if (!key.includes("$") && value != "") {
+  //     user[key] = value
+  //   } else { }
+  //   // console.log(`${key}: ${value}`)
+  // })
+  // user.senha = await bcrypt.hash(user.senha, 10)
+
+  // console.log({ user })
+  // const novoUser = await prisma.cliente.create({
+  //   data: {
+  //     name: user.nome,
+  //     email: user.email,
+  //     password: user.senha,
+  //   }
+  // })
+  // console.log(novoUser)
+}
+export async function createCliente(prevState: State, formData: FormData) {
+  var user: any = {}
+
+  formData.forEach((value, key) => {
+    if (!key.includes("$") && value != "") {
+      user[key] = value
+    } else { }
+    // console.log(`${key}: ${value}`)
+  })
+  user.senha = await bcrypt.hash(user.senha, 10)
+
+  console.log({ user })
+  const novoUser = await prisma.cliente.create({
+    data: {
+      name: user.nome,
+      email: user.email,
+      password: user.senha,
+    }
+  })
+  console.log(novoUser)
+}
 export async function createUser(prevState: State, formData: FormData) {
   var user: any = {}
   var especialidades: any = []
@@ -53,13 +106,15 @@ export async function createUser(prevState: State, formData: FormData) {
 
   console.log({ user })
   console.log(especialidades)
-  const novoUser = await prisma.user.create({data:{
-    name: user.nome,
-    email: user.email,
-    password: user.senha,
-    especializacao: user.especialidades
+  const novoUser = await prisma.user.create({
+    data: {
+      name: user.nome,
+      email: user.email,
+      password: user.senha,
+      especializacao: user.especialidades
 
-  }})
+    }
+  })
   console.log(novoUser)
   // // Validate form using Zod
   // const validatedFields = CreateInvoice.safeParse({
@@ -139,7 +194,36 @@ export async function fetchFilteredServicos(
     throw new Error('Failed to fetch invoices.');
   }
 }
-
+export async function fetchFilteredUser() {
+  noStore();
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true, email: true, name: true, especializacao: true
+      }
+    })
+    // console.log(users)
+    return users
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch invoices.');
+  }
+}
+export async function fetchFilteredCliente() {
+  noStore();
+  try {
+    const users = await prisma.cliente.findMany({
+      select: {
+        id: true, email: true, name: true
+      }
+    })
+    // console.log(users)
+    return users
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch invoices.');
+  }
+}
 
 export async function authenticate(
   prevState: string | undefined,

@@ -1,0 +1,26 @@
+# Copy from .env.local on the Vercel dashboard
+# https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database
+
+POSTGRES_URL="postgres://default:eRTwIM89zjhm@ep-aged-mountain-a40pisz5-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require"
+POSTGRES_PRISMA_URL="postgres://default:eRTwIM89zjhm@ep-aged-mountain-a40pisz5-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15"
+POSTGRES_URL_NO_SSL="postgres://default:eRTwIM89zjhm@ep-aged-mountain-a40pisz5-pooler.us-east-1.aws.neon.tech:5432/verceldb"
+POSTGRES_URL_NON_POOLING="postgres://default:eRTwIM89zjhm@ep-aged-mountain-a40pisz5.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require"
+POSTGRES_USER="default"
+POSTGRES_HOST="ep-aged-mountain-a40pisz5-pooler.us-east-1.aws.neon.tech"
+POSTGRES_PASSWORD="eRTwIM89zjhm"
+POSTGRES_DATABASE="verceldb"
+
+# `openssl rand -base64 32`
+AUTH_SECRET=7j8YQEXsocUYbNLWPx2peXAtAV3Pp97oGpYs+sAEwU0=
+AUTH_URL=http://localhost:3000/api/auth
+
+# This was inserted by `prisma init`:
+# Environment variables declared in this file are automatically made available to Prisma.
+# See the documentation for more detail: https://pris.ly/d/prisma-schema#accessing-environment-variables-from-the-schema
+
+# Prisma supports the native connection string format for PostgreSQL, MySQL, SQLite, SQL Server, MongoDB and CockroachDB.
+# See the documentation for all the connection string options: https://pris.ly/d/connection-strings
+
+#DATABASE_URL="mongodb://rom:123@localhost:27017/pet?ssl=true&connectTimeoutMS=5000&maxPoolSize=50"
+#DATABASE_URL="mongodb+srv://romualdo:romo@cluster0.tfkprcn.mongodb.net/pet"
+DATABASE_URL="mongodb+srv://romualdo:romo@cluster0.tfkprcn.mongodb.net/pet?retryWrites=true&w=majority&appName=Cluster0"
