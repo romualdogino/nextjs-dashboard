@@ -48,25 +48,19 @@ export type User = {
 }
 export async function createPet(prevState: State, formData: FormData) {
   console.log(formData)
-  // var user: any = {}
+  // try {
+  //   const novoUser = await prisma.pet.create({
+  //     data: {
+  //       name: formData.get('nome'),
+  //       email: user.email,
+  //       password: user.senha,
+  //     }
+  //   })
+  //   console.log(novoUser)
+  // } catch (error) {
+  //   console.log(error)
+  // }
 
-  // formData.forEach((value, key) => {
-  //   if (!key.includes("$") && value != "") {
-  //     user[key] = value
-  //   } else { }
-  //   // console.log(`${key}: ${value}`)
-  // })
-  // user.senha = await bcrypt.hash(user.senha, 10)
-
-  // console.log({ user })
-  // const novoUser = await prisma.cliente.create({
-  //   data: {
-  //     name: user.nome,
-  //     email: user.email,
-  //     password: user.senha,
-  //   }
-  // })
-  // console.log(novoUser)
 }
 export async function createCliente(prevState: State, formData: FormData) {
   var user: any = {}
