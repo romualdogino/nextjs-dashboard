@@ -1,18 +1,17 @@
 import Image from 'next/image';
-import { UpdateCliente, DeleteCliente, ViewCliente } from '@/app/ui/cliente/buttons';
+import { UpdateCliente, DeleteCliente, ViewCliente, ViewPet } from '@/app/ui/cliente/buttons';
 // import InvoiceStatus from '@/app/ui/invoices/status';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 // import { fetchFilteredInvoices } from '@/app/lib/data';
 import { fetchFilteredServicos } from '@/app/lib/data-mongodb';
 export type Servico = {
   id: string
-  name: string
-  email: string
-  especializacao: string
+  nome: string
+
 
 }
 export default async function PetTable(props: any) {
-  // console.log(props.servicos)
+  console.log({ aqui: props.pets })
 
 
   return (
@@ -20,11 +19,8 @@ export default async function PetTable(props: any) {
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {props.servicos?.map((servico: Servico) => {
+            {props.pets?.map((servico: Servico) => {
               // var arr: [] = JSON.parse(servico.especializacao)
-
-
-
               return (
                 <div
                   key={servico.id}
@@ -40,9 +36,9 @@ export default async function PetTable(props: any) {
                         height={28}
                         alt={`${servico.nome}'s profile picture`}
                       /> */}
-                        <p>{servico.name}</p>
+                        <p>{servico.nome}</p>
                       </div>
-                      <p className="text-sm text-gray-500">{servico.name}</p>
+                      <p className="text-sm text-gray-500">{servico.nome}</p>
                     </div>
                     {/* <InvoiceStatus status={servico.status} /> */}
                   </div>
@@ -82,7 +78,7 @@ export default async function PetTable(props: any) {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {props.servicos?.map((servico: Servico) => {
+              {props.pets?.map((servico: Servico) => {
                 // var arr:[] = servico.especializacao
 
                 console.log(servico)
@@ -101,22 +97,22 @@ export default async function PetTable(props: any) {
                         height={28}
                         alt={`${servico.nome}'s profile picture`}
                       /> */}
-                        <p>{servico.name}</p>
+                        <p>{servico.nome}</p>
                       </div>
                     </td>
                     <td className="whitespace-nowrap px-3 py-3">
-                      {servico.email}
+                      {servico.nome}
                     </td>
                     <td className="whitespace-nowrap px-3 py-3">
                       {
                         // arr.map(i => i)
-                        servico.especializacao
+                        servico.nome
                       }
                     </td>
 
                     <td className="whitespace-nowrap py-3 pl-6 pr-3">
                       <div className="flex justify-end gap-3">
-                      <ViewCliente id={servico.id} />
+                        <ViewPet id={servico.id} />
                         <UpdateCliente id={servico.id} />
                         <DeleteCliente id={servico.id} />
                       </div>

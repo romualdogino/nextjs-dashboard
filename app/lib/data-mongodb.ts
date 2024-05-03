@@ -9,7 +9,26 @@ import { redirect } from 'next/navigation';
 import { json } from 'stream/consumers';
 
 const prisma = new PrismaClient()
+export async function fetchFilteredPets(id: string
 
+) {
+  noStore();
+
+
+  try {
+    const pets = await prisma.pet.findMany({
+      where:{tutorId: id},
+      select: {
+        id: true, nome: true
+      }
+    })
+    console.log(pets)
+    return pets;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch invoices.');
+  }
+}
 export async function fetchCliente(id: string) {
   console.log(id + "aqui")
   try {
@@ -47,19 +66,27 @@ export type User = {
   nome: string, cpf: string, fone: string, email: string, senha: string, setorId: string
 }
 export async function createPet(prevState: State, formData: FormData) {
-  console.log(formData)
-  // try {
-  //   const novoUser = await prisma.pet.create({
-  //     data: {
-  //       name: formData.get('nome'),
-  //       email: user.email,
-  //       password: user.senha,
-  //     }
-  //   })
-  //   console.log(novoUser)
-  // } catch (error) {
-  //   console.log(error)
-  // }
+  // console.log(formData)
+
+  let dados: any = {
+    tutorId: formData.get('cliente')?.toString(),
+    nome: formData.get('nome')?.toString(),
+    tipo: formData.get('tipo')?.toString(),
+  }
+  console.log(dados)
+
+  try {
+
+
+    const novoPet = await prisma.pet.create({
+      data: dados
+    })
+    console.log(novoPet)
+
+
+  } catch (error) {
+    console.log(error)
+  }
 
 }
 export async function createCliente(prevState: State, formData: FormData) {

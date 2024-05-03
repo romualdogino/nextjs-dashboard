@@ -46,6 +46,17 @@ export function ViewCliente({ id }: { id: string }) {
     </Link>
   );
 }
+export function ViewPet({ id }: { id: string }) {
+  return (
+    <Link
+      href={`/dashboard/pet/${id}`}
+      className="rounded-md border p-2 hover:bg-gray-100"
+    >
+      <ViewfinderCircleIcon className="w-5" />
+    </Link>
+  );
+}
+
 export function createPet({ id }: { id: string }) {
   return (
     <Link
