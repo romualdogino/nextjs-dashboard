@@ -1,0 +1,50 @@
+#calendario {
+    width: 700px;
+    flex: content;
+}
+#semana{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 5px;
+   height: 60px;
+   list-style: none;
+   padding: 20px 40px;
+   border-radius: 20px;
+   background-color: rgb(189, 189, 247);
+   font-size: 1.25rem;
+}
+ #dias{
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* gap: 5px; */
+    list-style: none;
+    /* padding: 20px 40px; */
+    border-radius: 20px;
+    background-color: rgb(189, 189, 247);
+    font-size: 1.25rem;
+    flex-wrap: wrap;
+    align-content: center;
+    flex-direction: row;
+    align-items: center;
+ }
+#semana li{
+    width: 100px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#dias li {
+    min-width: 100px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    
+}
+.diaselect{
+    background-color: brown;
+}
