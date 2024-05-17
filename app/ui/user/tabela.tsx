@@ -5,6 +5,7 @@ import { UpdateServico, DeleteServico } from '@/app/ui/servicos/buttons';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 // import { fetchFilteredInvoices } from '@/app/lib/data';
 import { fetchFilteredServicos } from '@/app/lib/data-mongodb';
+import { ViewUsuario } from './buttons';
 export type Servico = {
   id: string
   name: string
@@ -55,6 +56,7 @@ export default async function UserTable(props: any) {
                       {/* <p>{formatDateToLocal(servico.date)}</p> */}
                     </div>
                     <div className="flex justify-end gap-2">
+                      <ViewUsuario id={servico.id} />
                       <UpdateServico id={servico.id} />
                       <DeleteServico id={servico.id} />
                     </div>
@@ -83,9 +85,9 @@ export default async function UserTable(props: any) {
             </thead>
             <tbody className="bg-white">
               {props.servicos?.map((servico: Servico) => {
-                  // var arr:[] = servico.especializacao
-              
-                  console.log(servico)
+                // var arr:[] = servico.especializacao
+
+                console.log(servico)
                 return (
 
                   <tr
@@ -116,6 +118,7 @@ export default async function UserTable(props: any) {
 
                     <td className="whitespace-nowrap py-3 pl-6 pr-3">
                       <div className="flex justify-end gap-3">
+                        <ViewUsuario id={servico.id} />
                         <UpdateServico id={servico.id} />
                         <DeleteServico id={servico.id} />
                       </div>

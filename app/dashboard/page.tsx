@@ -8,7 +8,7 @@ import { Suspense } from 'react';
 import {
   RevenueChartSkeleton,
   LatestInvoicesSkeleton,
-  CardsSkeleton 
+  CardsSkeleton
 } from '@/app/ui/skeletons';
 import { createUser, getAll } from '@/prisma/user';
 

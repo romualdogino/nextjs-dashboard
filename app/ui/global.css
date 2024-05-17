@@ -16,3 +16,31 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.calview{
+  position: relative;
+  width: 200px;
+}
+.cal {
+  /* position: relative;
+  
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column; */
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.callinha {
+  width: 14%;
+  padding: 5px;
+  box-sizing: border-box;
+  height: 100%; 
+  /* margin: 10px; */
+  /* flex: 1 1 14%; */
+  
+}
+.circulo{
+width: 100%;
+  background-color: rgb(171, 171, 190);
+  border-radius: 30%;
+}

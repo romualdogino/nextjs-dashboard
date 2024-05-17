@@ -1,4 +1,4 @@
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, PlusIcon, TrashIcon, ViewfinderCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { deleteInvoice } from '@/app/lib/actions';
 
@@ -13,7 +13,16 @@ export function CreateUsuario() {
     </Link>
   );
 }
-
+export function ViewUsuario({ id }: { id: string }) {
+  return (
+    <Link
+      href={`/dashboard/user/${id}`}
+      className="rounded-md border p-2 hover:bg-gray-100"
+    >
+      <ViewfinderCircleIcon className="w-5" />
+    </Link>
+  );
+}
 export function UpdateUsuario({ id }: { id: string }) {
   return (
     <Link

@@ -16,7 +16,6 @@ export default async function Page({ params }: { params: { id: string } }) {
 
         <div className="w-full">
             Olá, {params.id}
-
             <AbrirAgenda />
         </div>
     )

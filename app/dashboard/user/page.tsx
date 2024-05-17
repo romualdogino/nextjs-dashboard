@@ -31,7 +31,6 @@ export default async function Page() {
    
       <UserTable servicos={users}/>
   
-
   </div>
   )
 }
