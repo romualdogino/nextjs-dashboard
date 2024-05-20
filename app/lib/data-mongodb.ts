@@ -7,8 +7,72 @@ import bcrypt from 'bcrypt';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { json } from 'stream/consumers';
+import { boolean } from 'zod';
 
 const prisma = new PrismaClient()
+export async function fetchAgendaUser(nome: string, mes: number, ano: number) {
+  const agenda = await prisma.agenda.findFirst({
+    where: {
+      mes: mes,
+      ano: ano
+    }
+  }).then(async dados => {
+    if (dados == null) {
+      let agendaNova = await criarAgenda(mes, ano)
+      let novaAgenda = await prisma.agenda.create({data: agendaNova})
+      return novaAgenda
+    } else {
+      return dados
+    }
+  })
+  return agenda
+}
+async function criarAgenda(mes: number, ano: number) {
+  type Dias = {dia:string, tipo:string}
+  type Agenda = { mes: number,ano: number,dias: Dias[],users: []}
+  // console.log({mes,ano})
+  let agenda: Agenda = {
+    mes: mes,
+    ano: ano,
+    dias: [],//caledario []
+    users: []
+  }
+  agenda.dias = await criarCalendarioMes(mes, ano)
+  return agenda
+}
+async function criarCalendarioMes(mesEntrada: number, anoEntrada: number) {
+  let data = new Date(`${anoEntrada}-${mesEntrada}`)
+  var diaSemana = data.getDay()
+  var dia = data.getDate()
+  var mes = data.getMonth() + 1
+  var ano = data.getFullYear()
+  var ultimoDia = monthLength(mes, ano)
+  var primeiroDiaSemana = firstDiaSemana(mes, ano)
+  // console.log(data)
+  function monthLength(month: number, year: number) {
+    return new Date(year, month, 0).getDate();
+  };
+
+  function firstDiaSemana(month: number, year: number) {
+    return new Date(year, month - 1, 1).getDay();
+  };
+  function viewCalendario() {
+    let aux = []
+    for (let index = 1; index <= primeiroDiaSemana; index++) {
+      aux.push({ dia: "", tipo: "" })
+    }
+    for (let index = 1; index <= ultimoDia; index++) {
+      aux.push({ dia: index.toString(), tipo: "" })
+    }
+    // console.log(aux)
+
+    return aux
+
+  }
+  let ca = await viewCalendario()
+
+  return ca
+}
 export async function fetchFilteredPets(id: string
 
 ) {
@@ -17,7 +81,7 @@ export async function fetchFilteredPets(id: string
 
   try {
     const pets = await prisma.pet.findMany({
-      where:{tutorId: id},
+      where: { tutorId: id },
       select: {
         id: true, nome: true
       }

@@ -55,22 +55,30 @@ model Servico {
 }
 
 model Agenda {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  ref       String @unique
-  descricao Dias
+  id    String       @id @default(auto()) @map("_id") @db.ObjectId
+  mes   Int
+  ano   Int
+  dias  DiasRef[]
+  users AgendaUser[]
 }
 
-type Dias {
-  dia          Int
-  tipo         String
+type DiasRef {
+  dia  String
+  tipo String //feriados/normal/domingo
+}
+
+type AgendaUser {
+  nome         String
   especialista Json
-  obs          String
-  lista        Lista[]
+  obs          String?
+  dias         Lista[]
 }
 
 type Lista {
-  nome  String
-  lista Json
+  dia          String
+  tipo         String
+  especialista Json
+  agenda       Json
 }
 
 type Endereco {

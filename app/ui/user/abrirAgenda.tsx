@@ -10,8 +10,8 @@ export default function AbrirAgenda(props: any) {
         name: 'teste',
         especializacao: ['aa', 'ccc']
     }
-    // console.log(props)
-    type Dias = { dia: string | null, ative: boolean }
+    console.log(props)
+    type Dias = { dia: string | null, ative: boolean, tipo: string }
 
     interface DiasInterface { dados: Dias[], datas: { dias: string[], mes: string }, especialidades: string[] }
 
@@ -19,29 +19,56 @@ export default function AbrirAgenda(props: any) {
     const [dias, setDias] = useState<DiasInterface>({ dados: [], datas: { dias: [], mes: "" }, especialidades: [] })
     const [cont, setCont] = useState(0)
     let data = new Date()
-    let diaSemana = data.getDay()
-    let dia = data.getDate()
+    // let diaSemana = data.getDay()
+    // let dia = data.getDate()
     let mes = data.getMonth() + 1
-    let ano = data.getFullYear()
-    let ultimoDia = monthLength(mes, ano)
-    let primeiroDiaSemana = firstDiaSemana(mes, ano)
-    function monthLength(month: number, year: number) {
-        return new Date(year, month, 0).getDate();
-    };
-    function firstDiaSemana(month: number, year: number) {
-        return new Date(year, month - 1, 1).getDay();
-    };
-    function viewCalendario() {
+    // let ano = data.getFullYear()
+    // let ultimoDia = monthLength(mes, ano)
+    // let primeiroDiaSemana = firstDiaSemana(mes, ano)
+    // function monthLength(month: number, year: number) {
+    //     return new Date(year, month, 0).getDate();
+    // };
+
+    // function firstDiaSemana(month: number, year: number) {
+    //     return new Date(year, month - 1, 1).getDay();
+    // };
+    async function viewCalendario() {
+        // let aux: Dias[] = []
+        // for (let index = 1; index <= primeiroDiaSemana; index++) {
+        //     aux.push({ dia: "", ative: false })
+        // }
+        // for (let index = 1; index <= ultimoDia; index++) {
+        //     aux.push({ dia: index.toString(), ative: false })
+        // }
         let aux: Dias[] = []
-        for (let index = 1; index <= primeiroDiaSemana; index++) {
-            aux.push({ dia: "", ative: false })
-        }
-        for (let index = 1; index <= ultimoDia; index++) {
-            aux.push({ dia: index.toString(), ative: false })
+        if (props.diasDoMes.users) {
+            props.diasDoMes.users.map((u: any) => {
+                if (u.nome == user.name) {
+                    // let lista =
+                        // aux.push({
+                        //     dia: i.dia,
+                        //     ative: false,
+                        //     tipo: i.tipo,
+                        // })
+                }
+            })
+        } else {
+
         }
 
+
+        if (props.diasDoMes.dias) {
+            props.diasDoMes.dias.map((i: any) => {
+                aux.push({
+                    dia: i.dia,
+                    ative: false,
+                    tipo: i.tipo,
+                })
+            })
+
+        }
         setDias({ dados: aux, datas: dias.datas, especialidades: dias.especialidades })
-
+        // console.log(dias)
     }
     async function clicou(index: number, valor: any) {
         if (valor != "") {
@@ -91,7 +118,7 @@ export default function AbrirAgenda(props: any) {
     // }, [dias])
     return (
         <div>
-            <div>
+            {/* <div>
                 <p>Você clicou {cont} vezes</p>
                 <button onClick={() => setCont(cont + 1)}>
                     Clique aqui
@@ -103,7 +130,7 @@ export default function AbrirAgenda(props: any) {
             ano {ano}
             semana {diaSemana}
             primeiroDiaSemana {primeiroDiaSemana}
-            ultimo dia {ultimoDia}
+            ultimo dia {ultimoDia} */}
             <div>
                 agendamento para as especializações:
                 {user.especializacao.map(e => {
