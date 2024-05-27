@@ -7,9 +7,140 @@ import bcrypt from 'bcrypt';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { json } from 'stream/consumers';
-import { boolean } from 'zod';
+import { boolean, string } from 'zod';
+import { JsonValue } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient()
+export async function fetchUser(nome: string | null | undefined) {
+  if (typeof nome == "string") {
+    const user = await prisma.user.findFirst({
+      where: { name: nome },
+      select: {
+        email: true,
+        name: true,
+        especializacao: true,
+        id: true
+      }
+    })
+    return user
+  }
+}
+export async function postAbrirUserAgenda(post: any) {
+  console.log(post)
+  let mes = post.mes ? parseInt(post.mes) : 0
+  let ano = post.ano ? parseInt(post.ano) : 0
+  let agenda = await fetchAgendaUser(post.user, mes, ano)
+  console.log({ agenda: agenda.users })
+  if (agenda) {
+    var newUsers = agenda.users
+  }
+  var newUsers = agenda.users
+  if (agenda.users[0]) {
+    console.log("achou user")
+
+    // var aux = agenda.users.filter(u = > u.nome == post.user)
+    var aux = agenda.users
+    var indexUser = aux.findIndex(u => u.nome == post.user)
+    console.log(indexUser)
+    if (indexUser != -1) {
+      console.log("tem o user")
+      if (aux[indexUser].especialista && typeof aux[indexUser].especialista == 'object') {
+        //veerifica nova especialidade do user para o mes nos dias abertos
+
+        await post.especialidades.forEach((i: string) => {
+          if (aux[indexUser].especialista) {
+            let verificar = aux[indexUser].especialista.indexOf(i)
+            // console.log(verificar)
+            if (verificar === -1) {
+              aux[indexUser].especialista.push(i)
+            }
+          }
+        })
+        // console.log(aux[0].especialista)
+
+      }
+      //alterar os dias
+      aux[indexUser].dias.map(dia => {
+        post.dias.forEach((d: string) => {
+          if (d == dia.dia) {
+            dia.especialista = post.especialidades
+            dia.tipo = "aberto"
+          }
+        })
+      })
+      let resultado2 = await prisma.agenda.updateMany({
+        where: {
+          mes: mes, ano: ano
+        },
+        data: {
+          users: aux
+        },
+      })
+      console.log({ aux: aux[indexUser] })
+      return aux
+
+    } else {
+      console.log("não tem o user")
+      let newUserAgenda = await criarUserAgenda(agenda, post)
+      newUsers.push(newUserAgenda)
+      if (mes && ano) {
+        let result = await prisma.agenda.updateMany({
+          where: {
+            mes: mes, ano: ano,
+          },
+          data: {
+            users: newUsers
+          },
+        })
+        return result
+      }
+    }
+  } else {
+    console.log("não tem user")
+    let newUserAgenda = await criarUserAgenda(agenda, post)
+    newUsers.push(newUserAgenda)
+    if (mes && ano) {
+      let result = await prisma.agenda.updateMany({
+        where: {
+          mes: mes, ano: ano,
+        },
+        data: {
+          users: newUsers
+        },
+      })
+      return result
+    }
+  }
+}
+async function criarUserAgenda(agenda: any, post: any) {
+  let newAgenda: {
+    nome: string,
+    especialista: JsonValue,
+    obs: string,
+    dias: {
+      dia: string,
+      tipo: string,
+      especialista: JsonValue,
+      agenda: JsonValue
+    }[]
+  } = {
+    nome: post.user,
+    especialista: post.especialidades,
+    obs: "",
+    dias: []
+  }
+  for (let index = 1; index <= 31; index++) {
+    let aux = await post.dias.find((d: string) => parseInt(d) === index)
+    if (aux) {
+      newAgenda.dias.push({ dia: index.toString(), tipo: "aberto", especialista: post.especialidades, agenda: [] })
+    } else {
+      newAgenda.dias.push({ dia: index.toString(), tipo: "", especialista: "", agenda: [] })
+    }
+
+  }
+  // console.log(newAgenda)
+  return newAgenda
+}
 export async function fetchAgendaUser(nome: string, mes: number, ano: number) {
   const agenda = await prisma.agenda.findFirst({
     where: {
@@ -19,7 +150,7 @@ export async function fetchAgendaUser(nome: string, mes: number, ano: number) {
   }).then(async dados => {
     if (dados == null) {
       let agendaNova = await criarAgenda(mes, ano)
-      let novaAgenda = await prisma.agenda.create({data: agendaNova})
+      let novaAgenda = await prisma.agenda.create({ data: agendaNova })
       return novaAgenda
     } else {
       return dados
@@ -28,8 +159,8 @@ export async function fetchAgendaUser(nome: string, mes: number, ano: number) {
   return agenda
 }
 async function criarAgenda(mes: number, ano: number) {
-  type Dias = {dia:string, tipo:string}
-  type Agenda = { mes: number,ano: number,dias: Dias[],users: []}
+  type Dias = { dia: string, tipo: string }
+  type Agenda = { mes: number, ano: number, dias: Dias[], users: [] }
   // console.log({mes,ano})
   let agenda: Agenda = {
     mes: mes,
@@ -73,9 +204,7 @@ async function criarCalendarioMes(mesEntrada: number, anoEntrada: number) {
 
   return ca
 }
-export async function fetchFilteredPets(id: string
-
-) {
+export async function fetchFilteredPets(id: string) {
   noStore();
 
 
@@ -237,12 +366,8 @@ export async function createUser(prevState: State, formData: FormData) {
   // revalidatePath('/dashboard/invoices');
   // redirect('/dashboard/invoices');
 }
-
-
 const ITEMS_PER_PAGE = 6;
-export async function fetchFilteredServicos(
-
-) {
+export async function fetchFilteredServicos() {
   noStore();
 
 
