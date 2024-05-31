@@ -11,14 +11,14 @@ export default function AbrirAgenda(props: any) {
     //     name: 'teste2',
     //     especializacao: ['aa', 'ccc']
     // }
-    console.log(props.user)
+    // console.log(props.user)
     type Dias = { dia: string | null, ative: boolean, tipo: string }
 
     interface DiasInterface { dados: Dias[], datas: { dias: string[], mes: string, ano: string }, especialidades: string[] }
 
 
     const [dias, setDias] = useState<DiasInterface>({ dados: [], datas: { dias: [], mes: "", ano: "" }, especialidades: [] })
-    const [cont, setCont] = useState(0)
+    // const [cont, setCont] = useState(0)
     let data = new Date()
     // let diaSemana = data.getDay()
     // let dia = data.getDate()
@@ -35,15 +35,19 @@ export default function AbrirAgenda(props: any) {
     // };
     async function viewCalendario() {
         let aux: Dias[] = []
+        var aux2: any
         if (props.diasDoMes.users) {
             props.diasDoMes.users.map((u: any) => {
+                // {
+                //     agenda: []
+                //     dia: "1"
+                //     especialista: ['ccc']
+                //     tipo: "aberto"
+                // }
                 if (u.nome == props.user.name) {
-                    // let lista =
-                    // aux.push({
-                    //     dia: i.dia,
-                    //     ative: false,
-                    //     tipo: i.tipo,
-                    // })
+                    aux2 = u.dias
+                    // console.log(u.dias)
+
                 }
             })
         } else {
@@ -58,6 +62,17 @@ export default function AbrirAgenda(props: any) {
                     ative: false,
                     tipo: i.tipo,
                 })
+            })
+        }
+        if (aux2) {
+            // console.log("ee")
+            console.log({ aux })
+            console.log({ aux2 })
+            aux.map((a) => {
+                if (a.dia) {
+                    a.especialista = aux2[parseInt(a.dia) - 1].especialista
+                    a.agenda = aux2[parseInt(a.dia) - 1].agenda
+                }
             })
 
         }
@@ -120,6 +135,7 @@ export default function AbrirAgenda(props: any) {
     // useEffect(() => {
     //     console.log(dias)
     // }, [dias])
+    console.log(dias)
     return (
         <div>
             {/* <div>
@@ -137,7 +153,7 @@ export default function AbrirAgenda(props: any) {
             ultimo dia {ultimoDia} */}
             <div>
                 agendamento para as especializações:
-                {props.user.especializacao.map((e:any) => {
+                {props.user.especializacao.map((e: any) => {
                     return (
                         <div key={'select' + e}>
                             <input type="checkbox" name={e} onClick={event => selecionou(event)} />
