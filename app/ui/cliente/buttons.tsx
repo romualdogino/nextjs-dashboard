@@ -1,4 +1,4 @@
-import { HeartIcon, PencilIcon, PlusCircleIcon, PlusIcon, TrashIcon, ViewfinderCircleIcon } from '@heroicons/react/24/outline';
+import { CalendarDaysIcon, HeartIcon, PencilIcon, PlusCircleIcon, PlusIcon, TrashIcon, ViewfinderCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { deleteInvoice } from '@/app/lib/actions';
 
@@ -43,6 +43,16 @@ export function ViewCliente({ id }: { id: string }) {
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <ViewfinderCircleIcon className="w-5" />
+    </Link>
+  );
+}
+export function ViewAgendar({ id }: { id: string }) {
+  return (
+    <Link
+      href={`/dashboard/agenda/${id}`}
+      className="rounded-md border p-2 hover:bg-gray-100"
+    >
+      <CalendarDaysIcon className="w-5" />
     </Link>
   );
 }

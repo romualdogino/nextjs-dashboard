@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { UpdateCliente, DeleteCliente, ViewCliente, ViewPet } from '@/app/ui/cliente/buttons';
+import { UpdateCliente, DeleteCliente, ViewCliente, ViewPet, ViewAgendar } from '@/app/ui/cliente/buttons';
 // import InvoiceStatus from '@/app/ui/invoices/status';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 // import { fetchFilteredInvoices } from '@/app/lib/data';
@@ -50,6 +50,7 @@ export default async function PetTable(props: any) {
                       {/* <p>{formatDateToLocal(servico.date)}</p> */}
                     </div>
                     <div className="flex justify-end gap-2">
+                      
                       <ViewCliente id={servico.id} />
                       <UpdateCliente id={servico.id} />
                       <DeleteCliente id={servico.id} />
@@ -112,6 +113,8 @@ export default async function PetTable(props: any) {
 
                     <td className="whitespace-nowrap py-3 pl-6 pr-3">
                       <div className="flex justify-end gap-3">
+
+                        <ViewAgendar id={servico.id} />
                         <ViewPet id={servico.id} />
                         <UpdateCliente id={servico.id} />
                         <DeleteCliente id={servico.id} />

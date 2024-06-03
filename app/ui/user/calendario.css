@@ -48,3 +48,10 @@
 .diaselect{
     background-color: brown;
 }
+.tipoAberto{
+    /* background-color: cadetblue; */
+    border: 1px dotted #555;
+}
+.ehoje{
+    border: 1px dotted #555;
+}

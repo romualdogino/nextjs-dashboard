@@ -11,6 +11,23 @@ import { boolean, string } from 'zod';
 import { JsonValue } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient()
+export async function fetchAgendas( mes: number, ano: number) {
+  const agenda = await prisma.agenda.findFirst({
+    where: {
+      mes: mes,
+      ano: ano
+    }
+  }).then(async dados => {
+    if (dados == null) {
+      let agendaNova = await criarAgenda(mes, ano)
+      let novaAgenda = await prisma.agenda.create({ data: agendaNova })
+      return novaAgenda
+    } else {
+      return dados
+    }
+  })
+  return agenda
+}
 export async function fetchUser(nome: string | null | undefined) {
   if (typeof nome == "string") {
     const user = await prisma.user.findFirst({

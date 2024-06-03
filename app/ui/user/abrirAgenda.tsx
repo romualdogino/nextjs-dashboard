@@ -4,6 +4,7 @@ import "./calendario.css";
 import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { postAbrirUserAgenda } from "@/app/lib/data-mongodb";
+import { JsonValue } from "@prisma/client/runtime/library";
 export default function AbrirAgenda(props: any) {
     // let user = {
     //     id: '661c4708a1d9af22723dc4c8',
@@ -12,7 +13,7 @@ export default function AbrirAgenda(props: any) {
     //     especializacao: ['aa', 'ccc']
     // }
     // console.log(props.user)
-    type Dias = { dia: string | null, ative: boolean, tipo: string }
+    type Dias = { dia: string | null, ative: boolean, tipo: string, especialista: string, agenda: JsonValue }
 
     interface DiasInterface { dados: Dias[], datas: { dias: string[], mes: string, ano: string }, especialidades: string[] }
 
@@ -61,6 +62,8 @@ export default function AbrirAgenda(props: any) {
                     dia: i.dia,
                     ative: false,
                     tipo: i.tipo,
+                    agenda: [],
+                    especialista: ""
                 })
             })
         }
@@ -70,6 +73,7 @@ export default function AbrirAgenda(props: any) {
             console.log({ aux2 })
             aux.map((a) => {
                 if (a.dia) {
+                    a.tipo = aux2[parseInt(a.dia) - 1].tipo
                     a.especialista = aux2[parseInt(a.dia) - 1].especialista
                     a.agenda = aux2[parseInt(a.dia) - 1].agenda
                 }
@@ -176,7 +180,8 @@ export default function AbrirAgenda(props: any) {
                     {dias.dados.map((dias, id) => {
                         return (
                             <li
-                                className={dias.ative ? "diaselect" : ""}
+                                className={`${dias.ative ? "diaselect" : ""} ${dias.tipo == 'aberto' ? "tipoAberto" : ""} `}
+
                                 key={"dia" + id}
                                 onClick={() =>
                                     clicou(id, dias.dia)
