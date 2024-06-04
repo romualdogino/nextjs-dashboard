@@ -181,7 +181,6 @@ export default function AbrirAgenda(props: any) {
                         return (
                             <li
                                 className={`${dias.ative ? "diaselect" : ""} ${dias.tipo == 'aberto' ? "tipoAberto" : ""} `}
-
                                 key={"dia" + id}
                                 onClick={() =>
                                     clicou(id, dias.dia)

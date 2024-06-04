@@ -13,6 +13,7 @@ export default function Calendario(props: any) {
     const [dias, setDias] = useState(props.dados.dias)
     const [users, setUsers] = useState(props.dados.users)
     const [listaUser, setListaUser] = useState([])
+    const [agenda, setAgenda] = useState([])
     // console.log(dias)
     // console.log(hoje)
     async function clicou(dia: string) {
@@ -36,8 +37,12 @@ export default function Calendario(props: any) {
 
         })
         setListaUser([...teste])
-        console.log(listaUser)
+        console.log([listaUser])
 
+    }
+    async function mostraAgendas(nome: any) {
+        setAgenda([nome])
+        console.log(agenda)
     }
     return (
         <main>
@@ -58,7 +63,7 @@ export default function Calendario(props: any) {
                 {
                     listaUser?.map((user: any, index) => {
                         return (
-                            <div key={'nome-' + index + user} >
+                            <div key={'nome-' + index + user} onClick={() => mostraAgendas(user)}>
                                 <p><b>{user.nome}</b></p>
                                 {user.especialista.map((e: any, i: number) => {
                                     return (
@@ -73,6 +78,20 @@ export default function Calendario(props: any) {
 
 
                 }
+            </div>
+            <div id="agenda">
+                <hr />
+                {agenda?.map((a: any, index) => {
+                    return (
+                        <em key={index}>
+                            <p>nome:<strong>{a.nome}</strong></p>
+                            <p>dia:{a.dia}</p>
+                            <p>especialidades:{a.especialista.map((e: any, i: number) => " | " + e)}</p>
+                            <p>{a.tipo}</p>
+                            <p>agenda:{a.agenda.map((ag: any, i: number) => ag)}</p>
+                        </em>
+                    )
+                })}
             </div>
 
         </main>
