@@ -75,10 +75,14 @@ type AgendaUser {
 }
 
 type Lista {
-  dia          String
-  tipo         String
-  especialista Json
-  agenda       Json
+  dia                  String
+  tipo                 String
+  especialista         Json
+  agenda               Json
+  horainicial          Int
+  horafinal            Int
+  horaintervaloinicial Int
+  horaintervalofinal   Int
 }
 
 type Endereco {

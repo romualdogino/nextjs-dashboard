@@ -27,7 +27,6 @@ export default async function Page({ params }: { params: { id: string } }) {
     // console.log(params.id)
     // console.log({agenda})
     return (
-
         <div className="w-full">
             Olá, <strong>{session?.user?.name}</strong> do email: {session?.user?.email}
             <AbrirAgenda diasDoMes={agenda} user={user} />

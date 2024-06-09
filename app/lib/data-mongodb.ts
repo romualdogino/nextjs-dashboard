@@ -11,7 +11,7 @@ import { boolean, string } from 'zod';
 import { JsonValue } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient()
-export async function fetchAgendas( mes: number, ano: number) {
+export async function fetchAgendas(mes: number, ano: number) {
   const agenda = await prisma.agenda.findFirst({
     where: {
       mes: mes,
@@ -62,7 +62,7 @@ export async function postAbrirUserAgenda(post: any) {
     if (indexUser != -1) {
       console.log("tem o user")
       if (aux[indexUser].especialista && typeof aux[indexUser].especialista == 'object') {
-        //veerifica nova especialidade do user para o mes nos dias abertos
+        //verifica nova especialidade do user para o mes nos dias abertos
 
         await post.especialidades.forEach((i: string) => {
           if (aux[indexUser].especialista) {
@@ -82,6 +82,10 @@ export async function postAbrirUserAgenda(post: any) {
           if (d == dia.dia) {
             dia.especialista = post.especialidades
             dia.tipo = "aberto"
+            dia.horainicial = post.horainicial
+            dia.horafinal = post.horafinal
+            dia.horaintervaloinicial = post.horaintervaloinicial
+            dia.horaintervalofinal = post.horaintervalofinal
           }
         })
       })
@@ -139,19 +143,41 @@ async function criarUserAgenda(agenda: any, post: any) {
       tipo: string,
       especialista: JsonValue,
       agenda: JsonValue
+      horainicial: number
+      horafinal: number
+      horaintervaloinicial: number
+      horaintervalofinal: number
     }[]
   } = {
     nome: post.user,
     especialista: post.especialidades,
     obs: "",
-    dias: []
+    dias: [],
   }
   for (let index = 1; index <= 31; index++) {
     let aux = await post.dias.find((d: string) => parseInt(d) === index)
     if (aux) {
-      newAgenda.dias.push({ dia: index.toString(), tipo: "aberto", especialista: post.especialidades, agenda: [] })
+      newAgenda.dias.push({
+        dia: index.toString(),
+        tipo: "aberto",
+        especialista: post.especialidades,
+        agenda: [],
+        horainicial: post.horainicial,
+        horafinal: post.horafinal,
+        horaintervaloinicial: post.horaintervaloinicial,
+        horaintervalofinal: post.horaintervalofinal,
+      })
     } else {
-      newAgenda.dias.push({ dia: index.toString(), tipo: "", especialista: "", agenda: [] })
+      newAgenda.dias.push({
+        dia: index.toString(),
+        tipo: "",
+        especialista: "",
+        agenda: [],
+        horainicial: 0,
+        horafinal: 0,
+        horaintervaloinicial: 0,
+        horaintervalofinal: 0,
+      })
     }
 
   }
@@ -335,8 +361,8 @@ export async function createUser(prevState: State, formData: FormData) {
   user.especialidades = especialidades
   user.senha = await bcrypt.hash(user.senha, 10)
 
-  console.log({ user })
-  console.log(especialidades)
+  // console.log({ user })
+  // console.log(especialidades)
   const novoUser = await prisma.user.create({
     data: {
       name: user.nome,

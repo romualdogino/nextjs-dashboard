@@ -15,10 +15,30 @@ export default function AbrirAgenda(props: any) {
     // console.log(props.user)
     type Dias = { dia: string | null, ative: boolean, tipo: string, especialista: string, agenda: JsonValue }
 
-    interface DiasInterface { dados: Dias[], datas: { dias: string[], mes: string, ano: string }, especialidades: string[] }
+    interface DiasInterface {
+        dados: Dias[],
+        datas: { dias: string[], mes: string, ano: string },
+        especialidades: string[],
+    }
+    interface Horarioface {
+        horainicial: number,
+        horafinal: number,
+        horaintervaloinicial: number,
+        horaintervalofinal: number
+    }
 
 
-    const [dias, setDias] = useState<DiasInterface>({ dados: [], datas: { dias: [], mes: "", ano: "" }, especialidades: [] })
+    const [dias, setDias] = useState<DiasInterface>({
+        dados: [],
+        datas: { dias: [], mes: "", ano: "" },
+        especialidades: [],
+    })
+    const [horario, setHorario] = useState({
+        horainicial: 0,
+        horafinal: 0,
+        horaintervaloinicial: 0,
+        horaintervalofinal: 0,
+    })
     // const [cont, setCont] = useState(0)
     let data = new Date()
     // let diaSemana = data.getDay()
@@ -80,7 +100,11 @@ export default function AbrirAgenda(props: any) {
             })
 
         }
-        setDias({ dados: aux, datas: dias.datas, especialidades: dias.especialidades })
+        setDias({
+            dados: aux,
+            datas: dias.datas,
+            especialidades: dias.especialidades,
+        })
         // console.log(dias)
     }
     async function clicou(index: number, valor: any) {
@@ -123,14 +147,24 @@ export default function AbrirAgenda(props: any) {
     //     'use server'
     // }
     async function enviarDias() {
-        if (dias.especialidades[0]) {
-            let dados = { user: props.user.name, ...dias.datas, especialidades: dias.especialidades }
-            console.log(dados)
-            let result = await postAbrirUserAgenda(dados)
-            console.log(result)
-        } else {
-            console.log("não tem especialização")
+        if (horario.horainicial != 0
+            && horario.horafinal != 0
+            && horario.horaintervaloinicial != 0
+            && horario.horaintervalofinal != 0
+        ) {
 
+
+            if (dias.especialidades[0]) {
+                let dados = { user: props.user.name, ...dias.datas, especialidades: dias.especialidades, ...horario }
+                console.log(dados)
+                let result = await postAbrirUserAgenda(dados)
+                console.log({ result })
+            } else {
+                console.log("não tem especialização")
+
+            }
+        }else{
+            console.log('horários inválidos')
         }
     }
     useEffect(() => {
@@ -139,7 +173,21 @@ export default function AbrirAgenda(props: any) {
     // useEffect(() => {
     //     console.log(dias)
     // }, [dias])
-    console.log(dias)
+    // console.log(dias)
+    function mudaHorario(local: string, hora: string) {
+        let h = parseInt(hora.split(":")[0]) * 60 //minutos
+        let m = parseInt(hora.split(":")[1])
+        console.log({ local, hora })
+        console.log({ h, m })
+        let item = horario
+        item[local] = h + m
+
+        setHorario(item)
+        // setHorario(prevState => ({ ...prevState }))
+        // console.log(item)
+        console.log(horario)
+
+    }
     return (
         <div>
             {/* <div>
@@ -156,8 +204,24 @@ export default function AbrirAgenda(props: any) {
             primeiroDiaSemana {primeiroDiaSemana}
             ultimo dia {ultimoDia} */}
             <div>
+                <div>
+                    <label htmlFor="horainicial">hora inicial do trabalho</label>
+                    <input type="time" onChange={event => mudaHorario(event.target.id, event.target.value)} id="horainicial" />
+                </div>
+                <div>
+                    <label htmlFor="horaintervaloinicial">hora inicial do intervalo</label>
+                    <input type="time" onChange={event => mudaHorario(event.target.id, event.target.value)} id="horaintervaloinicial" />
+                </div>
+                <div>
+                    <label htmlFor="horaintervalofinal">hora final do intervalo</label>
+                    <input type="time" onChange={event => mudaHorario(event.target.id, event.target.value)} id="horaintervalofinal" />
+                </div>
+                <div>
+                    <label htmlFor="horafinal">hora final do trabalho</label>
+                    <input type="time" onChange={event => mudaHorario(event.target.id, event.target.value)} id="horafinal" />
+                </div>
                 agendamento para as especializações:
-                {props.user.especializacao.map((e: any) => {
+                {props.user?.especializacao.map((e: any) => {
                     return (
                         <div key={'select' + e}>
                             <input type="checkbox" name={e} onClick={event => selecionou(event)} />

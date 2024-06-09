@@ -1,9 +1,21 @@
 'use client'
 import { useState } from "react"
+import Agenda from "./agenda"
 type Dias = [{
     dia: string,
     ative: boolean
 }]
+type Agenda = {
+    agenda: []
+    dia: string
+    especialista: []
+    horafinal: number
+    horainicial: number
+    horaintervalofinal: number
+    horaintervaloinicial: number
+    nome: string
+    tipo: string
+}
 
 export default function Calendario(props: any) {
 
@@ -14,6 +26,7 @@ export default function Calendario(props: any) {
     const [users, setUsers] = useState(props.dados.users)
     const [listaUser, setListaUser] = useState([])
     const [agenda, setAgenda] = useState([])
+    const [horas, setHoras] = useState([])
     // console.log(dias)
     // console.log(hoje)
     async function clicou(dia: string) {
@@ -40,9 +53,24 @@ export default function Calendario(props: any) {
         console.log([listaUser])
 
     }
-    async function mostraAgendas(nome: any) {
+    async function mostraAgendas(nome: Agenda) {
         setAgenda([nome])
-        console.log(agenda)
+        let aux = await ListaHoras(nome.horainicial, nome.horafinal)
+        setHoras(aux)
+        setTimeout(() => {
+            console.log({ nome })
+            console.log({ horas })
+        }, 1000);
+
+    }
+    async function ListaHoras(inicial, final) {
+        let array = []
+
+        for (let i = inicial; i <= final; i = i + 30) {
+            array.push(i)
+        }
+        return array
+
     }
     return (
         <main>
@@ -83,13 +111,27 @@ export default function Calendario(props: any) {
                 <hr />
                 {agenda?.map((a: any, index) => {
                     return (
-                        <em key={index}>
+                        <div key={index}>
                             <p>nome:<strong>{a.nome}</strong></p>
                             <p>dia:{a.dia}</p>
                             <p>especialidades:{a.especialista.map((e: any, i: number) => " | " + e)}</p>
                             <p>{a.tipo}</p>
+                            <p>{a.horainicial}</p>
+                            <p>{a.horaintervaloinicial}</p>
+                            <p>{a.horaintervalofinal}</p>
+                            <p>{a.horafinal}</p>
                             <p>agenda:{a.agenda.map((ag: any, i: number) => ag)}</p>
-                        </em>
+                            <div id="horas">
+                                {horas.map((h: any, index) => {
+                                    return (
+                                        <p key={h}>
+                                            {(Math.floor(h / 60)).toString().padStart(2, '0')}:{(((h / 60) - Math.floor(h / 60)) * 60).toString().padStart(2, '0')}
+                                            | { h >= a.horaintervaloinicial && h < a.horaintervalofinal ? (<b style={{color:'red'}}>reservado</b>) : (<button onClick={()=>{console.log(h)}}>agendar</button>)}
+                                        </p>)
+                                })}
+                            </div>
+
+                        </div>
                     )
                 })}
             </div>
