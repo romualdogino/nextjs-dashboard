@@ -1,4 +1,4 @@
-import { fetchAgendaUser } from "@/app/lib/data-mongodb";
+import { fetchAgendaUser, fetchPet } from "@/app/lib/data-mongodb";
 import Agenda from "@/app/ui/agenda/agenda";
 import { lusitana } from "@/app/ui/fonts";
 import { auth } from "@/auth";
@@ -12,8 +12,10 @@ export default async function Page({ params }: { params: { id: string } }) {
     // const users = await fetchFilteredUser();
     const session = await auth()
     const userS = session?.user
+    const pet = await fetchPet(params.id)
 
     console.log(session)
+    console.log({pet})
    
     return (
         <div className="w-full">
@@ -22,6 +24,6 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
             </div>
-            <Agenda />
+            <Agenda pet={pet} />
         </div>)
 }

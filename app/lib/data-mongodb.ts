@@ -11,6 +11,25 @@ import { boolean, string } from 'zod';
 import { JsonValue } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient()
+export async function fetchServicos() {
+  
+    const user = await prisma.servico.findMany()
+    return user
+  
+}
+export async function fetchPet(nome: string | null | undefined) {
+  if (typeof nome == "string") {
+    const user = await prisma.pet.findFirst({
+      where: { id: nome },
+      select: {
+     
+        nome: true,
+        id: true
+      }
+    })
+    return user
+  }
+}
 export async function fetchAgendas(mes: number, ano: number) {
   const agenda = await prisma.agenda.findFirst({
     where: {

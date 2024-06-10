@@ -1,4 +1,4 @@
-import { fetchAgendas, fetchAgendaUser } from "@/app/lib/data-mongodb";
+import { fetchAgendas, fetchAgendaUser, fetchFilteredServicos, fetchServicos } from "@/app/lib/data-mongodb";
 import Calendario from "./calendario";
 
 export default async function Agenda(props: any) {
@@ -7,6 +7,7 @@ export default async function Agenda(props: any) {
     let ano = data.getFullYear()
     // console.log(mes)
     const agenda = await fetchAgendas(mes, ano);
+    const servicos = await fetchServicos();
     // console.log(params.id)
     // console.log(agenda)
     // let obj = {
@@ -166,7 +167,7 @@ export default async function Agenda(props: any) {
     return (<>
         teste -
         <div>
-            <Calendario dados={agenda}/>
+            <Calendario dados={agenda} pet={props.pet} servicos={servicos}/>
         </div>
     </>)
 }

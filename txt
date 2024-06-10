@@ -23,4 +23,5 @@ AUTH_URL=http://localhost:3000/api/auth
 
 #DATABASE_URL="mongodb://rom:123@localhost:27017/pet?ssl=true&connectTimeoutMS=5000&maxPoolSize=50"
 #DATABASE_URL="mongodb+srv://romualdo:romo@cluster0.tfkprcn.mongodb.net/pet"
-DATABASE_URL="mongodb+srv://romualdo:romo@cluster0.tfkprcn.mongodb.net/pet?retryWrites=true&w=majority&appName=Cluster0"
+#DATABASE_URL="mongodb+srv://romualdo:romo@cluster0.tfkprcn.mongodb.net/pet?retryWrites=true&w=majority&appName=Cluster0"
+DATABASE_URL="mongodb+srv://romualdo:rom@cluster0.tfkprcn.mongodb.net/pet?retryWrites=true&w=majority&appName=Cluster0"

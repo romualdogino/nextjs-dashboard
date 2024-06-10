@@ -18,7 +18,7 @@ type Agenda = {
 }
 
 export default function Calendario(props: any) {
-
+    console.log({ props })
     const data = new Date()
     const hoje = data.getDate()
     // var listaUser: any[] = []
@@ -27,6 +27,8 @@ export default function Calendario(props: any) {
     const [listaUser, setListaUser] = useState([])
     const [agenda, setAgenda] = useState([])
     const [horas, setHoras] = useState([])
+    const [pet, setPet] = useState(props.pet)
+    const [servicos, setServico] = useState(props.servicos)
     // console.log(dias)
     // console.log(hoje)
     async function clicou(dia: string) {
@@ -75,6 +77,13 @@ export default function Calendario(props: any) {
     return (
         <main>
             calendário
+            <p>agendar para : <strong>{pet ? pet.nome : ''}</strong></p>
+            selecionar servicos:
+            {servicos?.map((servico: any) => {
+                return (
+                    <p> {servico.nome} </p>
+                )
+            })}
             <div className="calview">
                 <div className="cal" >
                     {dias?.map((dia: any, index: number) => {
@@ -126,7 +135,7 @@ export default function Calendario(props: any) {
                                     return (
                                         <p key={h}>
                                             {(Math.floor(h / 60)).toString().padStart(2, '0')}:{(((h / 60) - Math.floor(h / 60)) * 60).toString().padStart(2, '0')}
-                                            | { h >= a.horaintervaloinicial && h < a.horaintervalofinal ? (<b style={{color:'red'}}>reservado</b>) : (<button onClick={()=>{console.log(h)}}>agendar</button>)}
+                                            | {h >= a.horaintervaloinicial && h < a.horaintervalofinal ? (<b style={{ color: 'red' }}>reservado</b>) : (<button onClick={() => { console.log(h) }}>agendar</button>)}
                                         </p>)
                                 })}
                             </div>
