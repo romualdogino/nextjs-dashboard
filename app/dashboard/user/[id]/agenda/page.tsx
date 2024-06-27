@@ -2,11 +2,10 @@ import { fetchAgendaUser, fetchUser } from "@/app/lib/data-mongodb";
 import AbrirAgenda from "@/app/ui/user/abrirAgenda";
 import { auth } from "@/auth";
 import { Metadata } from "next";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const metadata: Metadata = {
-    title: 'User',
+    title: 'User - agenda',
 };
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -30,9 +29,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     return (
         <div className="w-full">
             Olá, <strong>{session?.user?.name}</strong> do email: {session?.user?.email}
-            <Link href={params.id + '/agenda'} > <button> minha agenda </button> </Link><br />
-
-            <AbrirAgenda diasDoMes={agenda} user={user} />
+            {/* <AbrirAgenda diasDoMes={agenda} user={user} /> */}
         </div>
     )
 }

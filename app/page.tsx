@@ -40,7 +40,7 @@ export default function Page() {
       <div className="flex justify-evenly bg-white text-sm shadow-lg ring-1 ring-gray-900/5">
         <div className=" relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50">
 
-          <div className=''>
+          <div>
 
             <strong>Acesso ao cliente</strong>
           </div>
