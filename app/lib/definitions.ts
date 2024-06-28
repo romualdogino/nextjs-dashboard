@@ -7,6 +7,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  tipo: string;
   especializacao: []
 };
 export type Cliente = {
@@ -14,6 +15,7 @@ export type Cliente = {
   name: string;
   email: string;
   password: string;
+  tipo: string;
 };
 
 export type Customer = {

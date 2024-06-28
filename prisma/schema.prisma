@@ -30,7 +30,8 @@ model User {
   name           String
   password       String
   endereco       Endereco?
-  especializacao Json[]
+  tipo           String    @default("user")
+  especializacao Json?
   createAt       DateTime  @default(now())
 }
 
@@ -39,7 +40,8 @@ model Cliente {
   email    String   @unique
   name     String
   password String
-  pet      Json[]
+  tipo     String   @default("cliente")
+  pet      Json?
   obs      Json?
   createAt DateTime @default(now())
   Pet      Pet[]

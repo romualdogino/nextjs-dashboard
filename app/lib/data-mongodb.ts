@@ -398,6 +398,7 @@ export async function createCliente(prevState: State, formData: FormData) {
       name: user.nome,
       email: user.email,
       password: user.senha,
+      tipo:"cliente",
     }
   })
   console.log(novoUser)
@@ -424,6 +425,7 @@ export async function createUser(prevState: State, formData: FormData) {
       name: user.nome,
       email: user.email,
       password: user.senha,
+      tipo:"user",
       especializacao: user.especialidades
 
     }

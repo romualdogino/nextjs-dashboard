@@ -4,7 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 // import { sql } from '@vercel/postgres';
 import { PrismaClient } from '@prisma/client'
-import type { Cliente } from '@/app/lib/definitions';
+import type { Cliente, User } from '@/app/lib/definitions';
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient()
@@ -13,7 +13,7 @@ const prisma = new PrismaClient()
 async function getCliente(email: string): Promise<Cliente | undefined> {
     try {
         // const user = await sql<User>`SELECT * FROM users WHERE email=${email}`;
-        var  cliente = await prisma.cliente.findUnique({ where: { email }, select: { id: true, email: true, name: true, password: true} })
+        var  cliente = await prisma.cliente.findUnique({ where: { email }, select: { id: true, email: true, name: true, tipo: true, password: true} })
         // let password =await bcrypt.hash('123456',10)
     
         // console.log(password)
@@ -28,7 +28,7 @@ async function getCliente(email: string): Promise<Cliente | undefined> {
 async function getUser(email: string): Promise<User | undefined> {
     try {
         // const user = await sql<User>`SELECT * FROM users WHERE email=${email}`;
-        const user = await prisma.user.findUnique({ where: { email }, select: { id: true, email: true, name: true, password: true, especializacao: true } })
+        const user = await prisma.user.findUnique({ where: { email }, select: { id: true, email: true, name: true, password: true,tipo: true, especializacao: true } })
         // let password =await bcrypt.hash('123456',10)
         // console.log(password)
         if (user) { return user }

@@ -4,8 +4,8 @@ import Image from 'next/image';
 
 export default function LoginPage() {
   return (
-    <main className="flex items-center bg-black bg-opacity-25 shadow-md justify-center md:h-screen">
-      <div className="flex bg-white rounded-lg  shadow-xl max-w lg:max-w-4xl">
+    <main className="flex items-center bg-[url('/pattern/jupiter.svg')] bg-opacity-25 shadow-md justify-center md:h-screen">
+      <div className="flex bg-white  rounded-lg  shadow-xl max-w lg:max-w-4xl">
         <div className="content-center hidden lg:block lg:w-1/3 bg-cover">
           <div className="flex  justify-center shrink-0 items-center rounded-lg bg-white-500 p-4 ">
             <div className="w-32 text-white md:w-36">
