@@ -11,9 +11,13 @@ import {
   CardsSkeleton
 } from '@/app/ui/skeletons';
 import { createUser, getAll } from '@/prisma/user';
+import { auth } from '@/auth';
+import Image from 'next/image';
 
 
 export default async function Page() {
+  // const session = await auth()
+  // console.log({ s1: session })
   // let nome = await getAll()
   // console.log(nome)
   // const revenue = await fetchRevenue();
@@ -29,18 +33,17 @@ export default async function Page() {
       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
         Dashboard
       </h1>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="">
         <Suspense fallback={<CardsSkeleton />}>
           {/* <CardWrapper /> */}
         </Suspense>
-        {/* <Card title="Collected" value={totalPaidInvoices} type="collected" />
-        <Card title="Pending" value={totalPendingInvoices} type="pending" />
-        <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
-        <Card
-          title="Total Customers"
-          value={numberOfCustomers}
-          type="customers"
-        /> */}
+        <div className="box-border h-32 w-32 p-4 border-4 border">
+          
+            <div>
+              <strong>Andrew Alfred</strong>
+              <span>Technical advisor</span>
+            </div>
+        </div>
       </div>
       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
         {/* <RevenueChart revenue={revenue} /> */}

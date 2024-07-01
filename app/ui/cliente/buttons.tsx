@@ -19,7 +19,7 @@ export function UpdateCliente({ id }: { id: string }) {
   return (
     <Link
       href={`/dashboard/cliente/${id}/edit`}
-      className="rounded-md border p-2 hover:bg-gray-100"
+      className="pointer-events-none rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
     </Link>
@@ -83,7 +83,7 @@ export function DeleteCliente({ id }: { id: string }) {
   return (
 
     <form action={deleteInvoiceWithId}>
-      <button className="rounded-md border p-2 hover:bg-gray-100">
+      <button className="pointer-events-none rounded-md border p-2 hover:bg-gray-100">
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-4" />
       </button>

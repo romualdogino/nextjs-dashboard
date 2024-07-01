@@ -16,9 +16,9 @@ export function CreateServico() {
 
 export function UpdateServico({ id }: { id: string }) {
   return (
-    <Link
+    <Link  aria-disabled
       href={`/dashboard/config/${id}/edit`}
-      className="rounded-md border p-2 hover:bg-gray-100"
+      className=" pointer-events-none rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
     </Link>
@@ -30,7 +30,7 @@ export function DeleteServico({ id }: { id: string }) {
   return (
 
     <form action={deleteInvoiceWithId}>
-      <button className="rounded-md border p-2 hover:bg-gray-100">
+      <button disabled className="pointer-events-none rounded-md border p-2 hover:bg-gray-100">
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-4" />
       </button>

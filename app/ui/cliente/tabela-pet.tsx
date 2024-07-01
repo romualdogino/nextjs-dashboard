@@ -11,7 +11,7 @@ export type Servico = {
 
 }
 export default async function PetTable(props: any) {
-  console.log({ aqui: props.pets })
+  // console.log({ aqui: props.pets })
 
 
   return (

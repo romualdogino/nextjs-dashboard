@@ -19,7 +19,7 @@ type Agenda = {
 }
 
 export default function Calendario(props: any) {
-    console.log({ props })
+    // console.log({ props })
     const data = new Date()
     const hoje = data.getDate()
     // var listaUser: any[] = []
@@ -33,14 +33,13 @@ export default function Calendario(props: any) {
     const [pedido, setPedido] = useState([])
     // console.log(dias)
     // console.log(hoje)
-    async function clicou(dia: string) {
-        // listaUser = []
+    async function clicou(dia: string) {//lista dia do user
+        // listaUser = [] 
         var teste: any = []
-        console.log(typeof dia)
-        console.log(users)
+        // console.log(typeof dia)
+        // console.log({ users })
         await users.map(async (user: any) => {
             //user
-
             let busca = await user.dias.find((dias: any) => {
                 return (dias.dia == dia && dias.tipo == 'aberto')
             })
@@ -57,10 +56,10 @@ export default function Calendario(props: any) {
         // console.log([listaUser])
 
     }
-    async function mostraAgendas(nome: Agenda) {
+    async function mostraAgendas(nome: Agenda) { //mostra agenda do user
         setAgenda([nome])
         let aux = await ListaHoras(nome.horainicial, nome.horafinal)
-        setHoras(aux)
+        setHoras({ aux })
         setTimeout(() => {
             console.log({ nome })
             console.log({ horas })
@@ -76,7 +75,7 @@ export default function Calendario(props: any) {
         return array
 
     }
-    function selecionou(item: any, nome: string, duracao: number) {
+    function selecionou(item: any, nome: string, duracao: number) { //serviços solicitados
         console.log({ nome, duracao })
         let auxPedido = pedido
         if (item.target.checked) {
@@ -89,6 +88,7 @@ export default function Calendario(props: any) {
 
 
         setPedido(auxPedido)
+        Calend()
         console.log({ pedido })
 
     }
@@ -108,6 +108,31 @@ export default function Calendario(props: any) {
         let resp = await updateAgenda(arquivo)
         console.log({ resp })
     }
+    function Calend() {
+        console.log("chamou calendario")
+        if (pedido[0]) {
+            return (
+                <div className="calview">
+                    <div className="cal" >
+                        {dias?.map((dia: any, index: number) => {
+                            return (
+                                <div key={index} className="callinha" onClick={() => clicou(dia.dia)}>
+                                    <span className={`${dia.ative ? "circulo" : ""} ${dia.dia == hoje ? "ehoje" : ""}`}>{dia.dia}</span>
+                                </div>
+                            )
+                        })
+                        }
+                    </div>
+                </div>
+            )
+        }else{
+            return(
+
+                <button onClick={()=>Calend()}>ver calendário</button>
+            )
+        }
+
+    }
     return (
         <main>
             calendário
@@ -116,14 +141,15 @@ export default function Calendario(props: any) {
             {servicos?.map((servico: any) => {
                 // console.log(servico)
                 return (
-
                     <div key={'select' + servico.nome}>
                         <input type="checkbox" name={servico.nome} onClick={event => selecionou(event, servico.nome, servico.duracao)} />
                         <label>{servico.nome} - {servico.duracao}</label>
                     </div>
                 )
             })}
-            <div className="calview">
+
+            <Calend />
+            {/* <div className="calview">
                 <div className="cal" >
                     {dias?.map((dia: any, index: number) => {
                         return (
@@ -134,7 +160,7 @@ export default function Calendario(props: any) {
                     })
                     }
                 </div>
-            </div>
+            </div> */}
             <div id="users">
                 {
                     listaUser?.map((user: any, index) => {
@@ -168,13 +194,14 @@ export default function Calendario(props: any) {
                             <p>{a.horaintervaloinicial}</p>
                             <p>{a.horaintervalofinal}</p>
                             <p>{a.horafinal}</p>
-                            <p>agenda:{a.agenda.map((ag: any, i: number) => { 
+                            <p>agenda:{a.agenda.map((ag: any, i: number) => {
                                 console.log(a)
-                                return(<>
-                                {ag.pet}
-                                {ag.hora}
-                                </>) })
-                                }</p>
+                                return (<>
+                                    {ag.pet}
+                                    {ag.hora}
+                                </>)
+                            })
+                            }</p>
                             {
                                 pedido?.map(async serv => {
 
@@ -207,7 +234,7 @@ export default function Calendario(props: any) {
                                     )
                                 })
                             }
-                            
+
                             <div id="horas">
 
 
