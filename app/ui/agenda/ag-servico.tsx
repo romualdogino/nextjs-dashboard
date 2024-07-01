@@ -7,7 +7,7 @@ export default function AgServico(props: any) {
 
 
     const [servicos, setServico] = useState(props.servicos)
-    const [pedido, setPedido] = useState<{item:{nome: string, duracao: number, solicitado: boolean}[]|[],controle:number}>({ item: [], controle: 0 })
+    const [pedido, setPedido] = useState<{ item: { nome: string, duracao: number, solicitado: boolean }[] | [], controle: number }>({ item: [], controle: 0 })
 
     const selecionou = useCallback(async (item: any, nome: string, duracao: number) => { //serviços solicitados
         // console.log({ nome, duracao })
@@ -33,16 +33,26 @@ export default function AgServico(props: any) {
     }, [selecionou]);
 
     return (<>
-        {servicos?.map((servico: any) => {
-            // console.log(servico)
-            return (
-                <div key={'select' + servico.nome}>
-                    <input type="checkbox" name={servico.nome} onClick={event => selecionou(event, servico.nome, servico.duracao)} />
-                    <label>{servico.nome} - {servico.duracao}</label>
-                </div>
-            )
-        })}
-        <AgCalendario pedido={pedido} agenda={props.agenda} />
+        <div className="flex flex-wrap">
+            <div className="basis-1/4 md:basis-3/4 sm:basis-3/4 min-w-24">
+
+
+
+                {servicos?.map((servico: any) => {
+                    // console.log(servico)
+                    return (
+                        <div key={'select' + servico.nome}>
+                            <input type="checkbox" name={servico.nome} onClick={event => selecionou(event, servico.nome, servico.duracao)} />
+                            <label>{servico.nome} - {servico.duracao}</label>
+                        </div>
+                    )
+                })}
+            </div>
+
+           
+                <AgCalendario pedido={pedido} agenda={props.agenda} />
+           
+        </div>
     </>)
 
 }
