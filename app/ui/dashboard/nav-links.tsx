@@ -19,9 +19,10 @@ const links = [
   // { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
   // { name: 'Chat', href: '/dashboard/chat', icon: UserGroupIcon },
   { name: 'Configurações', href: '/dashboard/config', icon: Cog6ToothIcon },
+  { name: 'ADM', href: '/dashboard/adm', icon: Cog6ToothIcon },
   { name: 'User', href: '/dashboard/user', icon: BuildingOfficeIcon },
   { name: 'Cliente', href: '/dashboard/cliente', icon: UserGroupIcon },
-  { name: 'Agenda', href: '/dashboard/agenda', icon: CalendarDaysIcon },
+  { name: 'Agendamento', href: '/dashboard/agenda', icon: CalendarDaysIcon },
 ];
 
 export default function NavLinks() {
