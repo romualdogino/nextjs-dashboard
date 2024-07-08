@@ -11,6 +11,15 @@ import { boolean, string } from 'zod';
 import { JsonValue } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient()
+export async function updateAgendaADMById(dias, id) {
+  if (dias && id) {
+    let agenda = await prisma.agenda.update({
+      where: { id },
+      data: { dias }
+    })
+    return agenda
+  }
+}
 export async function updateAgenda(item) {
   //   {
   //     hora,
@@ -398,7 +407,7 @@ export async function createCliente(prevState: State, formData: FormData) {
       name: user.nome,
       email: user.email,
       password: user.senha,
-      tipo:"cliente",
+      tipo: "cliente",
     }
   })
   console.log(novoUser)
@@ -425,7 +434,7 @@ export async function createUser(prevState: State, formData: FormData) {
       name: user.nome,
       email: user.email,
       password: user.senha,
-      tipo:"user",
+      tipo: "user",
       especializacao: user.especialidades
 
     }

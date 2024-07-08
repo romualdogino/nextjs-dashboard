@@ -12,7 +12,7 @@ export default function AbrirAgenda(props: any) {
     //     name: 'teste2',
     //     especializacao: ['aa', 'ccc']
     // }
-    // console.log(props.user)
+    console.log(props)
     type Dias = { dia: string | null, ative: boolean, tipo: string, especialista: string, agenda: JsonValue }
 
     interface DiasInterface {
@@ -39,10 +39,11 @@ export default function AbrirAgenda(props: any) {
         horaintervaloinicial: 0,
         horaintervalofinal: 0,
     })
+    const [detalhes, setDetalhes] = useState({})
     // const [cont, setCont] = useState(0)
     let data = new Date()
     // let diaSemana = data.getDay()
-    // let dia = data.getDate()
+    let dia = data.getDate()
     let mes = data.getMonth() + 1
     let ano = data.getFullYear()
     // let ultimoDia = monthLength(mes, ano)
@@ -88,12 +89,13 @@ export default function AbrirAgenda(props: any) {
             })
         }
         if (aux2) {
+            //mescla dias global(aux) com user(aux2) 
             // console.log("ee")
             console.log({ aux })
             console.log({ aux2 })
             aux.map((a) => {
-                if (a.dia) {
-                    a.tipo = aux2[parseInt(a.dia) - 1].tipo
+                if (a.dia != "") {
+                    // a.tipo = aux2[parseInt(a.dia) - 1].tipo
                     a.especialista = aux2[parseInt(a.dia) - 1].especialista
                     a.agenda = aux2[parseInt(a.dia) - 1].agenda
                 }
@@ -105,14 +107,20 @@ export default function AbrirAgenda(props: any) {
             datas: dias.datas,
             especialidades: dias.especialidades,
         })
-        // console.log(dias)
+        setTimeout(() => {
+
+            console.log({ aux })
+        }, 1000);
     }
     async function clicou(index: number, valor: any) {
+
         if (valor != "") {
             let aux = dias.dados
             let auxData = dias.datas
             // let auxEsp = dias.especialidades
             aux[index].ative = !aux[index].ative
+            // console.log({t: aux[index]})
+            setDetalhes(aux[index])
             if (aux[index].ative == false) {
                 // console.log("apagar")
                 auxData.dias.splice(auxData.dias.findIndex(v => v == valor), 1)
@@ -163,7 +171,7 @@ export default function AbrirAgenda(props: any) {
                 console.log("não tem especialização")
 
             }
-        }else{
+        } else {
             console.log('horários inválidos')
         }
     }
@@ -190,19 +198,6 @@ export default function AbrirAgenda(props: any) {
     }
     return (
         <div>
-            {/* <div>
-                <p>Você clicou {cont} vezes</p>
-                <button onClick={() => setCont(cont + 1)}>
-                    Clique aqui
-                </button>
-            </div>
-            agenda
-            dia {dia}
-            mes {mes}
-            ano {ano}
-            semana {diaSemana}
-            primeiroDiaSemana {primeiroDiaSemana}
-            ultimo dia {ultimoDia} */}
             <div>
                 <div>
                     <label htmlFor="horainicial">hora inicial do trabalho</label>
@@ -229,7 +224,19 @@ export default function AbrirAgenda(props: any) {
                         </div>
                     )
                 })}
+
             </div>
+            <div>
+                <p>
+                    <strong>Detalhes do dia</strong>
+                </p>
+                {detalhes ? (<>
+                    {detalhes.especialista ? detalhes.especialista.map(i => i) : ""}
+                    {detalhes.agenda ? detalhes.agenda.map(i => i) : ""}
+                </>)
+                    : ""}
+            </div>
+
             <div id="calendario">
                 <div id="semana">
                     <li>Dom</li>
@@ -244,7 +251,11 @@ export default function AbrirAgenda(props: any) {
                     {dias.dados.map((dias, id) => {
                         return (
                             <li
-                                className={`${dias.ative ? "diaselect" : ""} ${dias.tipo == 'aberto' ? "tipoAberto" : ""} `}
+                                className={`
+                                    ${dias.dia == dia.toString() ? " border-red-800 rounded-full border " : ""} 
+                                    ${dias.ative ? "diaselect" : ""} ${dias.tipo == 'aberto' ? "tipoAberto" : ""} 
+                                    ${dias.tipo == "dia normal" ? "cursor-pointer hover:shadow-xl hover:bg-slate-400" : "pointer-events-none"}
+                                    relative`}
                                 key={"dia" + id}
                                 onClick={() =>
                                     clicou(id, dias.dia)
@@ -252,6 +263,13 @@ export default function AbrirAgenda(props: any) {
                                 value={dias?.dia?.toString()}
                             >
                                 {dias.dia}
+                                <span className="absolute text-xs mt-8 text-red-800">
+                                    {dias.dia == dia.toString() ? "HOJE" : ""}
+                                </span>
+                                <span className="absolute text-lg mt-8 text-green-800">
+                                    {dias.especialista ? "----" : ""}
+                                </span>
+                                {/* {dias.tipo} */}
                             </li>
                         )
                     })}
