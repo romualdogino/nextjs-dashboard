@@ -60,6 +60,57 @@ export default function AgCalendario(props: any) {
         setDetalhes({ item: user, marcador: Math.floor(Math.random() * 20) })
         console.log({ user })
     }
+    async function DetalheView() {
+        let Hi = detalhes.item?.horainicial
+        let Hii = detalhes.item?.horaintervaloinicial
+        let Hif = detalhes.item?.horaintervalofinal
+        let Hf = detalhes.item?.horafinal
+        const Mostra = () => {
+            let rows = []
+            var inteiro = 0
+            for (let hora = Hi; hora < Hf; hora++) {
+                if (hora == Hii) {
+                    rows.push(<p key={hora}> intervalo inicial</p>)
+                }
+                if (hora == Hif) {
+                    rows.push(<p key={hora}>intervalo final</p>)
+                }
+                if (Number.isInteger(hora / 60)) {
+                    // rows.push(<p key={hora}>{hora/60}</p>)
+                    inteiro = hora / 60
+                }
+
+                if (((hora % 60).toString()).charAt((hora % 60).toString().length - 1) == '0') {
+                    rows.push(<p key={hora}>{inteiro} : {((hora % 60).toString()).charAt((hora % 60).toString().length - 2)}0</p>)
+                }
+
+                // rows.push(<p key={hora}>{hora}</p>)
+                // rows.push(<p key={hora}>{hora%60}</p>)
+                // rows.push(<p key={hora}>{ ((hora%60).toString()).charAt((hora%60).toString().length - 1) } - teste</p>)
+
+
+            }
+
+
+            return rows
+
+        }
+
+        return (
+            <>
+                <p> dia: <strong>{detalhes.item?.dia}</strong></p>
+                <p> especialidade: <strong>{detalhes.item?.especialista}</strong></p>
+                <p> hora inicio: <strong>{detalhes.item?.horainicial}</strong></p>
+                <p> hora inter inicio: <strong>{detalhes.item?.horaintervaloinicial}</strong></p>
+                <p> hora inter fim: <strong>{detalhes.item?.horaintervalofinal}</strong></p>
+                <p> hora fim: <strong>{detalhes.item?.horafinal}</strong></p>
+                <div>
+                    {Mostra()}
+
+                </div>
+            </>
+        )
+    }
 
     return (<>
         <div className="basis-4/4">
@@ -85,21 +136,24 @@ export default function AgCalendario(props: any) {
             })}
         </div>
         <div className="basis-4/4">
-            {detalhes?.item?.especialista}
+            {/* {detalhes?.item?.especialista}
             {detalhes?.item?.horafinal}
             {detalhes?.item?.horainicial}
             {detalhes?.item?.horaintervaloinicial}
             {detalhes?.item?.horaintervalofinal}
-            {detalhes?.item?.agenda.map((i:any) => {
-                if (i.nome) {
+            <div className="relative bg-orange-600 w-96 h-1/2">
 
-                    return i.nome
-                }
-            })}
+                {detalhes?.item?.agenda.map((i: any) => {
+                    if (i.nome) {
+
+                        return i.nome
+                    }
+                })}
+            </div> */}
+            {detalhes.item ? DetalheView() : ''}
         </div>
         <div className="basis-4/4">
             <div className="grid grid-cols-7 gap-2 justify-items-center ">
-
                 {props?.agenda?.dias?.map((dia: { dia: string, tipo: string }, index: number) => {
 
                     return (
