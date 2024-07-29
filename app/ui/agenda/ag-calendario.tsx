@@ -68,20 +68,43 @@ export default function AgCalendario(props: any) {
         const Mostra = () => {
             let rows = []
             var inteiro = 0
+            var intervalo = false
             for (let hora = Hi; hora < Hf; hora++) {
                 if (hora == Hii) {
-                    rows.push(<p key={hora}> intervalo inicial</p>)
+                    rows.push(<p key={hora}> reservado </p>)
+                    intervalo = true
                 }
                 if (hora == Hif) {
-                    rows.push(<p key={hora}>intervalo final</p>)
+                    // rows.push(<p key={hora}>intervalo final</p>)
+                    intervalo = false
                 }
                 if (Number.isInteger(hora / 60)) {
                     // rows.push(<p key={hora}>{hora/60}</p>)
                     inteiro = hora / 60
+
                 }
 
                 if (((hora % 60).toString()).charAt((hora % 60).toString().length - 1) == '0') {
-                    rows.push(<p key={hora}>{inteiro} : {((hora % 60).toString()).charAt((hora % 60).toString().length - 2)}0</p>)
+                    if (intervalo) {
+
+                    } else {
+
+                        rows.push(
+                            <p key={hora} className="hover:shadow-xl,text-xl ">
+                                <span className="px-4 py-2 font-semibold text-sm bg-white text-slate-700">
+                                    {inteiro} : {((hora % 60).toString()).charAt((hora % 60).toString().length - 2) == "" ? "00" : ((hora % 60).toString()).charAt((hora % 60).toString().length - 2) + "0"}
+
+                                </span>
+                                <button className="
+                                px-4 py-2 font-semibold text-sm bg-white text-slate-700 dark:bg-slate-700 dark:text-white 
+                                rounded-md shadow-sm ring-1 ring-slate-900/5
+                                 border-indigo-500 hover:bg-blue-300 hover:border-blue-700 dark:border-sky-500 border-2 border-solid
+                                 " onClick={() => Agendar(hora, props.agenda.mes)}>
+                                    agendar
+                                </button>
+                            </p>
+                        )
+                    }
                 }
 
                 // rows.push(<p key={hora}>{hora}</p>)
@@ -104,14 +127,18 @@ export default function AgCalendario(props: any) {
                 <p> hora inter inicio: <strong>{detalhes.item?.horaintervaloinicial}</strong></p>
                 <p> hora inter fim: <strong>{detalhes.item?.horaintervalofinal}</strong></p>
                 <p> hora fim: <strong>{detalhes.item?.horafinal}</strong></p>
-                <div>
+                <div className="flex text-right flex-col">
                     {Mostra()}
 
                 </div>
             </>
         )
     }
-
+    function Agendar(hora, mes) {
+        console.log({ hora, mes })
+        console.log({ pedido: props.pedido.item })
+        props.pedido.item[0].solicitado = true
+    }
     return (<>
         <div className="basis-4/4">
             {props?.pedido?.item.map((
@@ -136,23 +163,9 @@ export default function AgCalendario(props: any) {
             })}
         </div>
         <div className="basis-4/4">
-            {/* {detalhes?.item?.especialista}
-            {detalhes?.item?.horafinal}
-            {detalhes?.item?.horainicial}
-            {detalhes?.item?.horaintervaloinicial}
-            {detalhes?.item?.horaintervalofinal}
-            <div className="relative bg-orange-600 w-96 h-1/2">
-
-                {detalhes?.item?.agenda.map((i: any) => {
-                    if (i.nome) {
-
-                        return i.nome
-                    }
-                })}
-            </div> */}
             {detalhes.item ? DetalheView() : ''}
         </div>
-        <div className="basis-4/4">
+        <div className="basis-4/4 c">
             <div className="grid grid-cols-7 gap-2 justify-items-center ">
                 {props?.agenda?.dias?.map((dia: { dia: string, tipo: string }, index: number) => {
 
