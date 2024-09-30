@@ -65,6 +65,7 @@ export default function AgCalendario(props: any) {
         let Hii = detalhes.item?.horaintervaloinicial
         let Hif = detalhes.item?.horaintervalofinal
         let Hf = detalhes.item?.horafinal
+        let dia = detalhes.item?.dia
         const Mostra = () => {
             let rows = []
             var inteiro = 0
@@ -99,7 +100,7 @@ export default function AgCalendario(props: any) {
                                 px-4 py-2 font-semibold text-sm bg-white text-slate-700 dark:bg-slate-700 dark:text-white 
                                 rounded-md shadow-sm ring-1 ring-slate-900/5
                                  border-indigo-500 hover:bg-blue-300 hover:border-blue-700 dark:border-sky-500 border-2 border-solid
-                                 " onClick={() => Agendar(hora, props.agenda.mes)}>
+                                 " onClick={() => Agendar(hora, props.agenda.mes,user,dia )}>
                                     agendar
                                 </button>
                             </p>
@@ -134,8 +135,8 @@ export default function AgCalendario(props: any) {
             </>
         )
     }
-    function Agendar(hora, mes) {
-        console.log({ hora, mes })
+    function Agendar(hora, mes, nome, dia) {
+        console.log({ hora, mes, nome, dia })
         console.log({ pedido: props.pedido.item })
         props.pedido.item[0].solicitado = true
     }

@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\dashboard\\agenda\\[id]",
+    "\\app\\ui",
+    "\\app\\ui\\agenda"
+  ],
+  "SelectedNode": "\\app\\ui\\agenda\\ag-calendario.tsx",
+  "PreviewInSolutionExplorer": false
+}

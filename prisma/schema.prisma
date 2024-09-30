@@ -13,38 +13,90 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String    @db.ObjectId
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id])
+
+  @@unique([providerId, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String   @db.ObjectId
+  expires      DateTime
+  sessionToken String   @unique
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  accounts       Account[]
+  sessions       Session[]
+  password       String
+  contato        Json?
+  endereco       Endereco?
+  tipo           String    @default("user")
+  especializacao Json?
+}
+
+model VerificationRequest {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
+}
+
 model Pet {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   tutorId        String   @db.ObjectId
   tutor          Cliente  @relation(fields: [tutorId], references: [id])
   tipo           String
   nome           String
-  obs            Json?
   caracteristica Json?
-  createAt       DateTime @default(now())
-}
-
-model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  email          String    @unique
-  name           String
-  password       String
-  endereco       Endereco?
-  tipo           String    @default("user")
-  especializacao Json?
-  createAt       DateTime  @default(now())
+  obs            Json?
+  porte          String?
+  idade          String?
+  raca           String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Cliente {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  email    String   @unique
-  name     String
-  password String
-  tipo     String   @default("cliente")
-  pet      Json?
-  obs      Json?
-  createAt DateTime @default(now())
-  Pet      Pet[]
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  cpf       String
+  email     String    @unique
+  name      String
+  password  String
+  tipo      String    @default("cliente")
+  pet       Json?
+  obs       Json?
+  contato   Json?
+  endereco  Endereco?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Pet       Pet[]
 }
 
 model Servico {
@@ -53,7 +105,9 @@ model Servico {
   descricao    String
   procedimento String?
   duracao      Int
-  createAt     DateTime @default(now())
+  valor        Float    @default(0.0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Agenda {
@@ -87,11 +141,44 @@ type Lista {
   horaintervalofinal   Int
 }
 
+model Agendamento {
+  id     String        @id @default(auto()) @map("_id") @db.ObjectId
+  dia    Int
+  mes    Int
+  ano    Int
+  agenda ListaAgenda[]
+}
+
+type ListaAgenda {
+  userId      String
+  user        String
+  clienteId   String
+  cliente     String
+  petId       String
+  pet         String
+  servico     ListaServico?
+  hora        String
+  horachegada String?
+  horasaida   String?
+  valortotal  String?
+  pagamento   String?
+  obs         String?
+  createdAt   DateTime      @default(now())
+}
+
+type ListaServico {
+  servicoId String
+  servico   String
+  duracao   Int
+}
+
 type Endereco {
   rua    String
   num    Int
   bairro String
   cidade String
+  uf     String
+  obs    String
 }
 
 // type Especializacao {

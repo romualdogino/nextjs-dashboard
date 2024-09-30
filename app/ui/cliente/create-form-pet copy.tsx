@@ -5,16 +5,35 @@ import { CheckIcon, CurrencyDollarIcon, UserCircleIcon } from "@heroicons/react/
 import { ClockIcon } from "@heroicons/react/20/solid";
 import { useFormState } from "react-dom";
 import { createInvoice } from "@/app/lib/actions";
-import { createCliente } from "@/app/lib/data-mongodb";
+import { createPet } from "@/app/lib/data-mongodb";
 
-export default function Form(props: any) {
+export default function FormPet(props: any) {
+    // console.log({form: props})
     const initialState = { message: null, errors: {} };
-    const [state, dispatch] = useFormState(createCliente, initialState);
+    const [state, dispatch] = useFormState(createPet, initialState);
     return (
-        < div className='grid grid-flow-col h-screen' >
+        < div className='grid grid-flow-col' >
             <form action={dispatch} method="post">
                 <div className="rounded-md bg-gray-50 p-4 md:p-6">
                     {/* Customer Name */}
+                    Cadastro do PET
+                    <div className="mb-4">
+                        <label htmlFor="customer" className="mb-2 block text-sm font-medium">
+                            cliente
+                        </label>
+                        <div className="relative">
+                            <input
+                                id="cliente"
+                                name="cliente"
+                                type="text"
+                                placeholder={props.idCliente}
+                                value={props.idCliente}
+                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                // disabled
+                            />
+                            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                        </div>
+                    </div>
                     <div className="mb-4">
                         <label htmlFor="customer" className="mb-2 block text-sm font-medium">
                             Nome
@@ -32,68 +51,19 @@ export default function Form(props: any) {
                     </div>
                     <div className="mb-4">
                         <label htmlFor="customer" className="mb-2 block text-sm font-medium">
-                            CPF
+                            especie do pet
                         </label>
                         <div className="relative">
-                            <input
-                                id="cpf"
-                                name="cpf"
-                                type="text"
-                                placeholder="cpf"
+                            <select
+                                id="tipo"
+                                name="tipo"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-
-                            />
-                            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="contato" className="mb-2 block text-sm font-medium">
-                            Contato
-                        </label>
-                        <div className="relative">
-                            <textarea
-                                id="contato"
-                                name="contato"
-                                placeholder="Contato"
-                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                cols={10}
                             >
-                            </textarea>
-                            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="customer" className="mb-2 block text-sm font-medium">
-                            Email
-                        </label>
-                        <div className="relative">
-                            <input
+                                <option value="">selecione a espécie</option>
+                                <option value="cao">cão</option>
+                                <option value="gato">gato</option>
 
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="email"
-                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-
-                            />
-                            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="customer" className="mb-2 block text-sm font-medium">
-                            Senha
-                        </label>
-                        <div className="relative">
-                            <input
-                                //  autoComplete="new-password"
-                                id="senha"
-                                name="senha"
-                                type="password"
-                                placeholder="Senha"
-
-                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-
-                            />
+                            </select>
                             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
                         </div>
                     </div>
@@ -105,7 +75,7 @@ export default function Form(props: any) {
                     >
                         Cancel
                     </Link>
-                    <Button type="submit">Criar Usuário</Button>
+                    <Button type="submit">Criar Pet</Button>
                 </div>
             </form>
         </div >

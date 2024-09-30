@@ -11,6 +11,7 @@ import { boolean, string } from 'zod';
 import { JsonValue } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient()
+
 export async function updateAgendaADMById(dias, id) {
   if (dias && id) {
     let agenda = await prisma.agenda.update({
@@ -408,6 +409,8 @@ export async function createCliente(prevState: State, formData: FormData) {
       email: user.email,
       password: user.senha,
       tipo: "cliente",
+      cpf: user.cpf,
+      contato: user.contato
     }
   })
   console.log(novoUser)
@@ -585,6 +588,7 @@ export async function createServico(State: State, formData: FormData) {
   let nome = formData.get('nome')?.toString()
   let tempo = formData.get('tempo')?.toString()
   let descricao = formData.get('descricao')?.toString()
+  let valor = parseFloat(formData.get('valor')?.valueOf())
   // console.log(formData)
 
   if (nome && tempo && descricao) {
@@ -593,7 +597,8 @@ export async function createServico(State: State, formData: FormData) {
       data: {
         nome: nome,
         duracao: parseInt(tempo, 10),
-        descricao: descricao
+        descricao: descricao,
+        valor: valor == undefined ? 0.0 : valor
 
       }
     })
