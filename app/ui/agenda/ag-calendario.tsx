@@ -1,4 +1,5 @@
 'use client'
+import { postAgendamento } from "@/app/lib/data-mongodb"
 import { useEffect, useState } from "react"
 
 export default function AgCalendario(props: any) {
@@ -100,7 +101,7 @@ export default function AgCalendario(props: any) {
                                 px-4 py-2 font-semibold text-sm bg-white text-slate-700 dark:bg-slate-700 dark:text-white 
                                 rounded-md shadow-sm ring-1 ring-slate-900/5
                                  border-indigo-500 hover:bg-blue-300 hover:border-blue-700 dark:border-sky-500 border-2 border-solid
-                                 " onClick={() => Agendar(hora, props.agenda.mes,user,dia )}>
+                                 " onClick={() => Agendar(hora, props.agenda.mes, user.item[0], dia)}>
                                     agendar
                                 </button>
                             </p>
@@ -135,10 +136,22 @@ export default function AgCalendario(props: any) {
             </>
         )
     }
-    function Agendar(hora, mes, nome, dia) {
-        console.log({ hora, mes, nome, dia })
-        console.log({ pedido: props.pedido.item })
-        props.pedido.item[0].solicitado = true
+    async function Agendar(hora: number, mes: number, nome: string, dia: string) {
+
+        const agendamento = {
+            hora: hora,
+            mes: mes,
+            nome: nome,
+            dia: dia,
+            solicitado: true,
+            pedido: props.pedido.item
+        }
+        console.log({ agendamento })
+        // const response = await postAgendamento(agendamento)
+        // console.log({ response })
+        // console.log({ hora, mes, nome, dia })
+        // console.log({ pedido: props.pedido.item })
+        // props.pedido.item[0].solicitado = true
     }
     return (<>
         <div className="basis-4/4">

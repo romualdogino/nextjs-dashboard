@@ -12,6 +12,38 @@ import { JsonValue } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient()
 
+export async function postAgendamento(agendamento: any) {
+  try {
+    const teste = await prisma.agendamento.findFirst({
+      where: {
+        dia: agendamento.dia,
+        mes: agendamento.mes,
+        ano: agendamento.ano
+      }
+    })
+    if (teste) {
+      return "já tem"
+    } else{
+      const ag = await prisma.agendamento.create({
+        data: {
+          dia: agendamento.dia,
+          mes: agendamento.mes,
+          ano: agendamento.ano,
+
+        }
+      })
+      if (ag) {
+        return "criado db"
+      }
+
+    }
+
+  } catch (error) {
+
+  }
+  return ag
+}
+
 export async function updateAgendaADMById(dias, id) {
   if (dias && id) {
     let agenda = await prisma.agenda.update({
