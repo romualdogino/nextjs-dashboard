@@ -364,11 +364,12 @@ export async function fetchFilteredPets(id: string) {
   }
 }
 export async function fetchCliente(id: string) {
-  console.log(id + "aqui")
+  // console.log(id + "aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
   try {
-    let cliente = await prisma.cliente.findUnique({
+    const cliente = await prisma.cliente.findUnique({
       where: { id: id }
     })
+    // console.log({zzz:cliente})
     return cliente
   } catch (error) {
     console.log("error")
@@ -399,21 +400,24 @@ export async function fetchCliente(id: string) {
 export type User = {
   nome: string, cpf: string, fone: string, email: string, senha: string, setorId: string
 }
-export async function createPet(prevState: State, formData: FormData) {
-  // console.log(formData)
+export async function createPet(data: any) {
+  console.log(data)
+  // console.log(prevState)
 
-  let dados: any = {
-    tutorId: formData.get('cliente')?.toString(),
-    nome: formData.get('nome')?.toString(),
-    tipo: formData.get('tipo')?.toString(),
-  }
-  console.log(dados)
+  // let dados: any = {
+
+
+  //   // tutorId: formData.get('cliente')?.toString(),
+  //   // nome: formData.get('nome')?.toString(),
+  //   // tipo: formData.get('tipo')?.toString(),
+  // }
+  // console.log(dados)
 
   try {
 
 
     const novoPet = await prisma.pet.create({
-      data: dados
+      data: {...data }
     })
     console.log(novoPet)
 
@@ -423,6 +427,63 @@ export async function createPet(prevState: State, formData: FormData) {
   }
 
 }
+
+
+
+export async function findListaPets() {
+  let data = await prisma.pet.findMany()
+  return data
+}
+export async function fetchPesquisaPets(
+  query: string,
+  currentPage: number,
+) {
+  noStore();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const pets = await prisma.pet.findMany({
+      where: {
+        nome: {
+          
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+      });
+
+    return pets
+    ;
+
+    // const invoices = await sql<InvoicesTable>`
+    //   SELECT
+    //     invoices.id,
+    //     invoices.amount,
+    //     invoices.date,
+    //     invoices.status,
+    //     customers.name,
+    //     customers.email,
+    //     customers.image_url
+    //   FROM invoices
+    //   JOIN customers ON invoices.customer_id = customers.id
+    //   WHERE
+    //     customers.name ILIKE ${`%${query}%`} OR
+    //     customers.email ILIKE ${`%${query}%`} OR
+    //     invoices.amount::text ILIKE ${`%${query}%`} OR
+    //     invoices.date::text ILIKE ${`%${query}%`} OR
+    //     invoices.status ILIKE ${`%${query}%`}
+    //   ORDER BY invoices.date DESC
+    //   LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    // `;
+
+    // return invoices.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    // throw new Error('Failed to fetch invoices.');
+  }
+}
+
+
 export async function createCliente(prevState: State, formData: FormData) {
   var user: any = {}
 

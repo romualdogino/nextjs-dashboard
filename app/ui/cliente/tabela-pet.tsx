@@ -23,7 +23,7 @@ export default async function PetTable(props: any) {
               // var arr: [] = JSON.parse(servico.especializacao)
               return (
                 <div
-                  key={servico.id}
+                  key={'pet' + servico.id}
                   className="mb-2 w-full rounded-md bg-white p-4"
                 >
                   <div className="flex items-center justify-between border-b pb-4">

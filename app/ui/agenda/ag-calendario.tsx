@@ -140,14 +140,31 @@ export default function AgCalendario(props: any) {
 
         const agendamento = {
             hora: hora,
-            mes: mes,
             nome: nome,
             dia: dia,
+            mes: mes,
+            ano: props.ano,
             solicitado: true,
-            pedido: props.pedido.item
+            agenda: {
+                user: nome,
+                servico: '',
+                // clienteId,
+                // cliente,
+                // petId,
+                // pet,
+                // servico,
+                // hora,
+                // horachegada,
+                // horasaida,
+                // valortotal,
+                // pagamento,
+                // obs,
+            }
         }
         console.log({ agendamento })
         // const response = await postAgendamento(agendamento)
+
+
         // console.log({ response })
         // console.log({ hora, mes, nome, dia })
         // console.log({ pedido: props.pedido.item })

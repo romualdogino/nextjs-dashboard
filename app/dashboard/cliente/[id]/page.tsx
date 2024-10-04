@@ -28,7 +28,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
         <div className="w-full">
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-                <Breadcrumbs 
+                <Breadcrumbs
                     breadcrumbs={[
                         { label: 'Cliente', href: '/dashboard/cliente' },
                         {
@@ -44,13 +44,16 @@ export default async function Page({ params }: { params: { id: string } }) {
                 /}
                 {/* <CadastroUser /> */}
             </div>
-            <div  className="flex w-full items-center justify-between">
+            {/* <div  className="flex w-full items-center justify-between">
                 <h1 className={`${lusitana.className} text-2xl`}> {cliente?.name}</h1>
             </div>
             <div  className="flex w-full items-center justify-between">
                 <h1 className={`${lusitana.className} text-2xl`}> {cliente?.email}</h1>
+            </div> */}
+            <div>
+
+                <AddPet cliente={cliente} params={{ id: params.id,  pets }} />
             </div>
-            <AddPet params={{ id: params.id, pets }} />
             {/* <ClienteTable servicos={users} /> */}
             {/* <ViewCliente cliente={cliente} /> */}
         </div>
