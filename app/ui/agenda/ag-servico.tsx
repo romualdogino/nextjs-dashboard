@@ -32,12 +32,9 @@ export default function AgServico(props: any) {
         // };
     }, [selecionou]);
 
-    return (<>
+    return (
         <div className="flex flex-wrap">
             <div className="basis-1/4 md:basis-3/4 sm:basis-3/4 min-w-24">
-
-
-
                 {servicos?.map((servico: any) => {
                     // console.log(servico)
                     return (
@@ -48,11 +45,8 @@ export default function AgServico(props: any) {
                     )
                 })}
             </div>
-
-           
-                <AgCalendario pedido={pedido} agenda={props.agenda} />
-           
+            <AgCalendario pedido={pedido} agenda={props.agenda} />
         </div>
-    </>)
+    )
 
 }

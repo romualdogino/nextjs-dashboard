@@ -12,11 +12,11 @@ export default async function Agenda(props: any) {
     const servicos = await fetchServicos();
 
 
-    return (<>
-        <AgServico servicos={servicos} agenda={agenda} />
+    return (
         <div>
+            <AgServico servicos={servicos} agenda={agenda} />
             {/* <Calendario dados={agenda} pet={props.pet} servicos={servicos} /> */}
         </div>
-        
-    </>)
+
+    )
 }
