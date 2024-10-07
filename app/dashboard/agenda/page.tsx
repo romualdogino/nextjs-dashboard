@@ -25,9 +25,7 @@ export default async function Page({
 
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-
-  const listaPet = await fetchPesquisaPets(query, currentPage);
-
+  const listaPet = query ? await fetchPesquisaPets(query, currentPage) : []
 
   return (
 
@@ -39,10 +37,9 @@ export default async function Page({
       </div>
       <div className="flex w-full items-center justify-between">
 
-        <PesquisaPets placeholder="Pesquisar por nome do pet" />
+        <PesquisaPets query={query} placeholder="Pesquisar por nome do pet" />
 
         <TablePet
-
           listaPet={listaPet}
         />
       </div>

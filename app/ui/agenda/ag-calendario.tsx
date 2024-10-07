@@ -26,14 +26,15 @@ export default function AgCalendario(props: any) {
 
         // console.log({ pro1: props.pedido })
         setLista({ item: props.agenda.users, marcador: Math.floor(Math.random() * 20) })
+        setDetalhes({ item: null, marcador: Math.floor(Math.random() * 20) })
+        setListaUser({ item: [], marcador: Math.floor(Math.random() * 20) })
+        setUser({ item: [], marcador: Math.floor(Math.random() * 20) })
         // console.log({ pro1: props })
         // console.log({ lista })
         // console.log({ listaUser })
         // console.log({ detalhes })
         ///testa se o pedido veio vazio
-        if(props.pedido[0]==""){
-            console.log("vazio")
-        }
+        // console.log("okkk")
 
 
     }, [props])
@@ -63,8 +64,8 @@ export default function AgCalendario(props: any) {
                 }
             })
         })
-        
-        setUser({ item: aux as string[], marcador: Math.floor(Math.random() * 20) })
+
+        setUser({ item: aux as any[], marcador: Math.floor(Math.random() * 20) })
         setListaUser({ item: auxag as any[], marcador: Math.floor(Math.random() * 20) })
         setDetalhes({ item: null, marcador: Math.floor(Math.random() * 20) })
         // console.log({ auxag, aux })
@@ -73,8 +74,7 @@ export default function AgCalendario(props: any) {
     }
     async function selecionaNome(nome: string) {
         //seleciona detalhes do user
-        console.log({ nome })
-
+        // console.log({ nome })
         let user: AgendaUser | null = null
         listaUser.item.map((users: AgendaUser) => {
             if (users.nome == nome) {
@@ -83,7 +83,7 @@ export default function AgCalendario(props: any) {
             }
         })
         setDetalhes({ item: user, marcador: Math.floor(Math.random() * 20) })
-        console.log({ user })
+        // console.log({ user })
     }
     async function DetalheView() {
         let Hi = detalhes.item?.horainicial
@@ -196,8 +196,9 @@ export default function AgCalendario(props: any) {
         // props.pedido.item[0].solicitado = true
     }
     return (
-        <>
+        <div>
             <div className="basis-4/4">
+            {/** lista de serviços selecionados */}
                 {props?.pedido?.item.map((
                     serv: { nome: string, duracao: number, solicitado: boolean },
                     index: number) => {
@@ -213,11 +214,18 @@ export default function AgCalendario(props: any) {
                 })}
             </div>
             <div className="basis-4/4">
-                {user?.item.map((u, index) => {
-                    return (
-                        <p key={u + index} onClick={() => selecionaNome(u)}>{u}</p>
-                    )
-                })}
+            {/** lista de usuarios disponiveis no dia */}
+                <ul className="list-none p-0">
+                    {user?.item.map((u, index) => (
+                        <li 
+                            key={u + index} 
+                            onClick={() => selecionaNome(u)}
+                            className="border border-spacing-4 border-green-800 text-center cursor-pointer p-2 hover:bg-gray-100 rounded"
+                        >
+                            {u}
+                        </li>
+                    ))}
+                </ul>
             </div>
             <div className="basis-4/4">
                 {detalhes.item ? DetalheView() : ''}
@@ -239,7 +247,7 @@ export default function AgCalendario(props: any) {
                 </div>
             </div>
 
-        </>
+        </div>
     )
 
 }

@@ -13,19 +13,17 @@ export default function AgServico(props: any) {
         // console.log({ nome, duracao })
         let auxPedido: { nome: string, duracao: number, solicitado: boolean }[] = pedido?.item
         if (item.target.checked) {
-
             auxPedido.push({ nome, duracao, solicitado: false })
         } else {
-
             auxPedido.splice(auxPedido.findIndex((v: { nome: string }) => v.nome == nome), 1)
         }
-
 
         setPedido({ item: auxPedido, controle: Math.floor(Math.random() * 20) })
         // console.log({ pedido })
     }, [pedido])
 
     useEffect(() => {
+        
         // console.log('Componente montado.');
         // return () => {
         //     console.log('Componente desmontado.');
