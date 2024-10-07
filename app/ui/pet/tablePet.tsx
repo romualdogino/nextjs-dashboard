@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 
 export default function PesquisaPetTable({
-    funcao,
+    // funcao,
     // petAtivo: any;
     listaPet
 }: {
