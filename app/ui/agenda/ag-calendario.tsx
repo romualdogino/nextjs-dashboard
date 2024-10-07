@@ -86,6 +86,14 @@ export default function AgCalendario(props: any) {
         // console.log({ user })
     }
     async function DetalheView() {
+
+
+        // Foco aqui!!!!!!
+
+
+
+
+
         let Hi = detalhes.item?.horainicial
         let Hii = detalhes.item?.horaintervaloinicial
         let Hif = detalhes.item?.horaintervalofinal
@@ -145,7 +153,7 @@ export default function AgCalendario(props: any) {
         }
 
         return (
-            <>
+            <div>
                 <p> dia: <strong>{detalhes.item?.dia}</strong></p>
                 <p> especialidade: <strong>{detalhes.item?.especialista}</strong></p>
                 <p> hora inicio: <strong>{detalhes.item?.horainicial}</strong></p>
@@ -156,11 +164,12 @@ export default function AgCalendario(props: any) {
                     {Mostra()}
 
                 </div>
-            </>
+            </div>
         )
     }
     async function Agendar(hora: number, mes: number, nome: string, dia: number) {
-
+        let pagamento = 0
+        let duracao = 0
         const agendamento = {
 
             nome: nome,
@@ -172,8 +181,10 @@ export default function AgCalendario(props: any) {
             agenda: {
                 user: nome,
                 hora: hora,
-                servico: props.pedido.item.map((serv: { nome: string, duracao: number, solicitado: boolean }, index: number) => {
-                    return { nome: serv.nome, duracao: serv.duracao }
+                servico: props.pedido.item.map((serv: { nome: string, duracao: number, solicitado: boolean, valor: number }, index: number) => {
+                    duracao += serv.duracao
+                    pagamento += serv.valor
+                    return { nome: serv.nome, duracao: serv.duracao, valor: serv.valor }
                 }),
                 // clienteId,
                 // cliente
@@ -182,9 +193,10 @@ export default function AgCalendario(props: any) {
                 horachegada: 0,
                 horasaida: 0,
                 // valortotal: "",
-                pagamento: 0,
+                tempoTotal: duracao,
+                pagamento: pagamento,
                 // obs,
-            }
+            },
         }
         console.log({ agendamento })
         // const response = await postAgendamento(agendamento)
@@ -198,7 +210,7 @@ export default function AgCalendario(props: any) {
     return (
         <div>
             <div className="basis-4/4">
-            {/** lista de serviços selecionados */}
+                {/** lista de serviços selecionados */}
                 {props?.pedido?.item.map((
                     serv: { nome: string, duracao: number, solicitado: boolean },
                     index: number) => {
@@ -212,23 +224,6 @@ export default function AgCalendario(props: any) {
                         </div>
                     )
                 })}
-            </div>
-            <div className="basis-4/4">
-            {/** lista de usuarios disponiveis no dia */}
-                <ul className="list-none p-0">
-                    {user?.item.map((u, index) => (
-                        <li 
-                            key={u + index} 
-                            onClick={() => selecionaNome(u)}
-                            className="border border-spacing-4 border-green-800 text-center cursor-pointer p-2 hover:bg-gray-100 rounded"
-                        >
-                            {u}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div className="basis-4/4">
-                {detalhes.item ? DetalheView() : ''}
             </div>
             <div className="basis-4/4 c">
                 <div className="grid grid-cols-7 gap-2 justify-items-center ">
@@ -246,6 +241,24 @@ export default function AgCalendario(props: any) {
                     })}
                 </div>
             </div>
+            <div className="basis-4/4">
+                {/** lista de usuarios disponiveis no dia */}
+                <ul className="list-none p-0">
+                    {user?.item.map((u, index) => (
+                        <li
+                            key={u + index}
+                            onClick={() => selecionaNome(u)}
+                            className="border border-spacing-4 border-green-800 text-center cursor-pointer p-2 hover:bg-gray-100 rounded"
+                        >
+                            {u}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="basis-4/4">
+                {detalhes.item ? DetalheView() : ''}
+            </div>
+
 
         </div>
     )

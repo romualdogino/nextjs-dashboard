@@ -161,6 +161,8 @@ type ListaAgenda {
   horachegada String?
   horasaida   String?
   valortotal  String?
+  tempoTotal  Int
+  valorTotal  Float
   pagamento   String?
   obs         String?
   createdAt   DateTime      @default(now())
@@ -170,6 +172,7 @@ type ListaServico {
   servicoId String
   servico   String
   duracao   Int
+  valor     Float
 }
 
 type Endereco {
