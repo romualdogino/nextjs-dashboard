@@ -1,5 +1,5 @@
 'use server'
-import { PrismaClient } from '@prisma/client'
+import { Compra, Prisma, PrismaClient } from '@prisma/client'
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -13,6 +13,7 @@ import { JsonValue } from '@prisma/client/runtime/library';
 const prisma = new PrismaClient()
 
 export async function postAgendamento(agendamento: any) {
+  console.log({ agendamento })
   try {
     const teste = await prisma.agendamento.findFirst({
       where: {
@@ -23,25 +24,53 @@ export async function postAgendamento(agendamento: any) {
     })
     if (teste) {
       return "já tem"
-    } else{
-      const ag = await prisma.agendamento.create({
-        data: {
-          dia: agendamento.dia,
-          mes: agendamento.mes,
-          ano: agendamento.ano,
+    } else {
 
-        }
-      })
-      if (ag) {
-        return "criado db"
-      }
-
+      return "criado db"
     }
 
   } catch (error) {
 
   }
+
+}
+async function criarAgentamento(agendamento: any) {
+  const ag = await prisma.agendamento.create({
+    data: {
+      dia: agendamento.dia,
+      mes: agendamento.mes,
+      ano: agendamento.ano,
+      agenda: [{
+        ...agendamento.agenda
+      }],
+    }
+  })
   return ag
+}
+async function criarCompra(compra: any) {
+  let somaValor = 0
+  let co: Prisma.compra = {
+    clienteId: compra.clienteId,
+    produtos: [],
+    valor: 0,
+  }
+  compra.agenda.servico.map((s: any) => {
+    co.produtos.push({
+      nome: s.servico,
+      quantidade: s.quantidade,
+      valorunit: s.valor,
+      valorTotal: s.valor * s.quantidade,
+    })
+    somaValor += s.valor*s.quantidade
+  })
+  co.valor = somaValor
+  let comp = await prisma.compra.create({
+    data: {
+     co
+    }
+  }) 
+
+  return comp
 }
 
 export async function updateAgendaADMById(dias, id) {
@@ -417,7 +446,7 @@ export async function createPet(data: any) {
 
 
     const novoPet = await prisma.pet.create({
-      data: {...data }
+      data: { ...data }
     })
     console.log(novoPet)
 
@@ -445,15 +474,15 @@ export async function fetchPesquisaPets(
     const pets = await prisma.pet.findMany({
       where: {
         nome: {
-          
+
           contains: query,
           mode: 'insensitive',
         },
       },
-      });
+    });
 
     return pets
-    ;
+      ;
 
     // const invoices = await sql<InvoicesTable>`
     //   SELECT

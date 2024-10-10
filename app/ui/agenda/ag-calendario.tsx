@@ -134,7 +134,8 @@ export default function AgCalendario(props: any) {
                                 px-4 py-2 font-semibold text-sm bg-white text-slate-700 dark:bg-slate-700 dark:text-white 
                                 rounded-md shadow-sm ring-1 ring-slate-900/5
                                  border-indigo-500 hover:bg-blue-300 hover:border-blue-700 dark:border-sky-500 border-2 border-solid
-                                 " onClick={() => Agendar(hora, props.agenda.mes, user.item[0], dia)}>
+                                 " onClick={() => Agendar(hora, props.agenda.mes, 
+                                 user.item[0], dia, detalhes.item?.especialista)}>
                                         agendar
                                     </button>
                                 </p>
@@ -167,45 +168,60 @@ export default function AgCalendario(props: any) {
             </div>
         )
     }
-    async function Agendar(hora: number, mes: number, nome: string, dia: number) {
+    function filtrarEspecialidadeUser(especialidadeOferecida: any) {
+        let aux: any[] = []
+        props.pedido.item.map((pedido: any) => {
+            especialidadeOferecida.map((esp: any) => {
+                if (pedido.nome == esp) {
+                    aux.push(pedido)
+                }
+            })
+
+        })
+        return aux
+    }
+    async function Agendar(hora: number, mes: number, nome: string, 
+        dia: number, especialidadeOferecida: any) {
         let pagamento = 0
         let duracao = 0
+        let especializacaoSolicitada = filtrarEspecialidadeUser(especialidadeOferecida)
+        console.log({ especialidadeOferecida })
+        console.log({ lista: props.pedido.item })
+        console.log({ especializacaoSolicitada })
         const agendamento = {
-
             nome: nome,
             dia: dia,
             mes: mes,
             ano: props.agenda.ano,
             solicitado: true,
-
             agenda: {
                 user: nome,
                 hora: hora,
-                servico: props.pedido.item.map((serv: { nome: string, duracao: number, solicitado: boolean, valor: number }, index: number) => {
+                servico: especializacaoSolicitada.map((serv: { nome: string, duracao: number, solicitado: boolean, valor: number }, index: number) => {
                     duracao += serv.duracao
                     pagamento += serv.valor
                     return { nome: serv.nome, duracao: serv.duracao, valor: serv.valor }
                 }),
-                // clienteId,
+                clienteId: localStorage.getItem("tutorId") ? localStorage.getItem("tutorId") : "",
                 // cliente
                 petId: localStorage.getItem("petAtivo") ? localStorage.getItem("petAtivo") : "",
-                pet: "",
+                pet: localStorage.getItem("petNome") ? localStorage.getItem("petNome") : "",
                 horachegada: 0,
                 horasaida: 0,
-                // valortotal: "",
+                valortotal: pagamento,
                 tempoTotal: duracao,
-                pagamento: pagamento,
+                pagamento: "",
                 // obs,
             },
         }
         console.log({ agendamento })
-        // const response = await postAgendamento(agendamento)
+        const response = await postAgendamento(agendamento)
+        console.log({ response })
 
+        // localStorage.setItem('petAtivo', id)
+        // localStorage.setItem('petNome', nome)
+        // localStorage.setItem('tutorId', tutorId)
 
-        // console.log({ response })
-        // console.log({ hora, mes, nome, dia })
-        // console.log({ pedido: props.pedido.item })
-        // props.pedido.item[0].solicitado = true
     }
     return (
         <div>

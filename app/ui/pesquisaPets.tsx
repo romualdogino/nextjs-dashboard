@@ -36,6 +36,8 @@ export default function PesquisaPets({ placeholder, query }: { placeholder: stri
         <button
           onClick={() => {
             localStorage.removeItem('petAtivo');
+            localStorage.removeItem('petNome');
+            localStorage.removeItem('tutorId');
             setPetAtivo(null);
           }}
           className="bg-red-500 hover:bg-red-600 text-white rounded-full p-1"
