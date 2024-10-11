@@ -217,6 +217,18 @@ export default function AgCalendario(props: any) {
         console.log({ agendamento })
         const response = await postAgendamento(agendamento)
         console.log({ response })
+        if (response) {
+            alert("agendamento realizado com sucesso")
+            let aux = props.pedido.item
+            aux.map((serv: { nome: string, duracao: number, solicitado: boolean }, index: number) => {
+                if (serv.nome == especializacaoSolicitada[0].nome) {
+                    aux[index].solicitado = true
+                }
+            })
+            console.log({ aux })
+        } else {
+            alert("já tem agendamento nesse dia")
+        }
 
         // localStorage.setItem('petAtivo', id)
         // localStorage.setItem('petNome', nome)

@@ -15,22 +15,27 @@ const prisma = new PrismaClient()
 export async function postAgendamento(agendamento: any) {
   console.log({ agendamento })
   try {
-    const teste = await prisma.agendamento.findFirst({
+    let teste = await prisma.agendamento.findFirst({
       where: {
         dia: agendamento.dia,
         mes: agendamento.mes,
         ano: agendamento.ano
       }
     })
+    console.log({ teste })
     if (teste) {
       return "já tem"
+
     } else {
 
-      return "criado db"
+      let ag = await criarAgentamento(agendamento)
+      return ag
+
     }
 
   } catch (error) {
-
+    console.log(error)
+    return false
   }
 
 }
@@ -41,6 +46,7 @@ async function criarAgentamento(agendamento: any) {
       mes: agendamento.mes,
       ano: agendamento.ano,
       agenda: [{
+        
         ...agendamento.agenda
       }],
     }
@@ -49,27 +55,30 @@ async function criarAgentamento(agendamento: any) {
 }
 async function criarCompra(compra: any) {
   let somaValor = 0
-  let co: Prisma.compra = {
-    clienteId: compra.clienteId,
+  let co: Prisma.CompraCreateInput = {
+    cliente: {
+      connect: {
+        id: compra.clienteId
+      }
+    },
     produtos: [],
     valor: 0,
   }
   compra.agenda.servico.map((s: any) => {
-    co.produtos.push({
+    co.produtos?.push({
       nome: s.servico,
       quantidade: s.quantidade,
       valorunit: s.valor,
       valorTotal: s.valor * s.quantidade,
-    })
+    } as Prisma.ProdutoCreateInput)
     somaValor += s.valor*s.quantidade
   })
   co.valor = somaValor
   let comp = await prisma.compra.create({
     data: {
-     co
+     ... co
     }
-  }) 
-
+  })
   return comp
 }
 
