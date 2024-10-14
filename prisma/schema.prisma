@@ -14,21 +14,23 @@ datasource db {
 }
 
 model Compra {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  clienteId String   @db.ObjectId
-  cliente   Cliente  @relation(fields: [clienteId], references: [id])
-  produtos  Produto[]
-  valor     Float
-  createdAt DateTime @default(now())
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  clienteId   String        @db.ObjectId
+  cliente     Cliente       @relation(fields: [clienteId], references: [id])
+  produtos    Produto[]
+  agendamento ListaAgenda[]
+  pagamento   Boolean       @default(false)
+  ativo       Boolean       @default(true)
+  valor       Float
+  createdAt   DateTime      @default(now())
 }
 
 type Produto {
-  nome  String
+  nome       String
   quantidade Int
-  valorunit Float
-  valorTotal Float  
+  valorunit  Float
+  valorTotal Float
 }
-
 
 model Account {
   id                 String    @id @default(auto()) @map("_id") @db.ObjectId
@@ -174,11 +176,11 @@ type ListaAgenda {
   cliente     String
   petId       String
   pet         String
-  servico     ListaServico?
-  hora        String
-  horachegada String?
-  horasaida   String?
-  valortotal  String?
+  servico     ListaServico[]
+  hora        Int
+  horachegada Int?
+  horasaida   Int?
+  // valortotal  String?
   tempoTotal  Int
   valorTotal  Float
   pagamento   String?
@@ -189,7 +191,7 @@ type ListaAgenda {
 
 type ListaServico {
   servicoId String
-  servico   String
+  nome      String
   duracao   Int
   valor     Float
 }
