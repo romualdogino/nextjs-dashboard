@@ -24,10 +24,16 @@ export async function postAgendamento(agendamento: any) {
     })
     console.log({ teste })
     if (teste) {
-      return "já tem"
+
+      const alterar = await updateAgentamento(teste.id, agendamento)
+      console.log(alterar)
+
+
+      return alterar
+
 
     } else {
-
+      //inicia o db
       let ag = await criarAgentamento(agendamento)
       return ag
 
@@ -39,6 +45,22 @@ export async function postAgendamento(agendamento: any) {
   }
 
 }
+async function updateAgentamento(id: string, agendamento: any) {
+  const atualizado = await prisma.agendamento.update({
+    where: {
+      id
+    },
+    data: {
+      agenda: {
+        push: agendamento.agenda,
+        // sort: 'asc',
+        // fields: ['hora']
+        
+      },
+    }
+  })
+  return atualizado
+}
 async function criarAgentamento(agendamento: any) {
   const ag = await prisma.agendamento.create({
     data: {
@@ -46,7 +68,7 @@ async function criarAgentamento(agendamento: any) {
       mes: agendamento.mes,
       ano: agendamento.ano,
       agenda: [{
-        
+
         ...agendamento.agenda
       }],
     }
@@ -71,12 +93,12 @@ async function criarCompra(compra: any) {
       valorunit: s.valor,
       valorTotal: s.valor * s.quantidade,
     } as Prisma.ProdutoCreateInput)
-    somaValor += s.valor*s.quantidade
+    somaValor += s.valor * s.quantidade
   })
   co.valor = somaValor
   let comp = await prisma.compra.create({
     data: {
-     ... co
+      ...co
     }
   })
   return comp

@@ -135,7 +135,7 @@ export default function AgCalendario(props: any) {
                                 rounded-md shadow-sm ring-1 ring-slate-900/5
                                  border-indigo-500 hover:bg-blue-300 hover:border-blue-700 dark:border-sky-500 border-2 border-solid
                                  " onClick={() => Agendar(hora, props.agenda.mes,
-                                        user.item[0], dia, detalhes.item?.especialista)}>
+                                        detalhes.item?.nome, dia, detalhes.item?.especialista)}>
                                         agendar
                                     </button>
                                 </p>
@@ -163,7 +163,6 @@ export default function AgCalendario(props: any) {
                 <p> hora fim: <strong>{detalhes.item?.horafinal}</strong></p>
                 <div className="flex text-right flex-col">
                     {Mostra()}
-
                 </div>
             </div>
         )
@@ -227,12 +226,14 @@ export default function AgCalendario(props: any) {
         if (response) {
             alert("agendamento realizado com sucesso")
             let aux = props.pedido.item
-            aux.map((serv: { nome: string, duracao: number, solicitado: boolean }, index: number) => {
+            await aux.map((serv: { nome: string, duracao: number, solicitado: boolean }, index: number) => {
                 if (serv.nome == especializacaoSolicitada[0].nome) {
                     aux[index].solicitado = true
                 }
             })
-            console.log({ aux })
+            props.pedido.item = aux
+            console.log({ teste: props.pedido.item })
+            
         } else {
             alert("já tem agendamento nesse dia")
         }
