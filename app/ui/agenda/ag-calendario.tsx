@@ -231,8 +231,9 @@ export default function AgCalendario(props: any) {
                     aux[index].solicitado = true
                 }
             })
-            props.pedido.item = aux
-            console.log({ teste: props.pedido.item })
+            // props.pedido.item = aux
+            // console.log({ teste: props})
+            props.funcao(aux)
             
         } else {
             alert("já tem agendamento nesse dia")

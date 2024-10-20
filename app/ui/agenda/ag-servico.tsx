@@ -21,14 +21,17 @@ export default function AgServico(props: any) {
         setPedido({ item: auxPedido, controle: Math.floor(Math.random() * 20) })
         // console.log({ pedido })
     }, [pedido])
-
+    const alterarPedido = useCallback((item: any) => {
+        // console.log(item)
+        setPedido({ item: item, controle: Math.floor(Math.random() * 20) })
+    },[pedido])
     useEffect(() => {
 
-        // console.log('Componente montado.');
+        console.log('alterando lista de pedido');
         // return () => {
         //     console.log('Componente desmontado.');
         // };
-    }, [selecionou]);
+    }, [pedido]);
 
     return (
         <div className="flex flex-wrap">
@@ -44,7 +47,7 @@ export default function AgServico(props: any) {
                     )
                 })}
             </div>
-            <AgCalendario pedido={pedido} agenda={props.agenda} />
+            <AgCalendario pedido={pedido} funcao={alterarPedido} agenda={props.agenda} />
         </div>
     )
 

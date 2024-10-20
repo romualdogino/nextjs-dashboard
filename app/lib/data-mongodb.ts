@@ -13,7 +13,7 @@ import { JsonValue } from '@prisma/client/runtime/library';
 const prisma = new PrismaClient()
 
 export async function postAgendamento(agendamento: any) {
-  console.log({ agendamento })
+  // console.log({ agendamento })
   try {
     let teste = await prisma.agendamento.findFirst({
       where: {
@@ -22,11 +22,11 @@ export async function postAgendamento(agendamento: any) {
         ano: agendamento.ano
       }
     })
-    console.log({ teste })
+    // console.log({ teste })
     if (teste) {
 
       const alterar = await updateAgentamento(teste.id, agendamento)
-      console.log(alterar)
+      // console.log(alterar)
 
 
       return alterar
