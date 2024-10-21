@@ -2,12 +2,25 @@
 import { useCallback, useEffect, useState } from "react"
 import AgCalendario from "./ag-calendario"
 import { number } from "zod"
+import { cookieCria } from "./action"
+
+
 
 export default function AgServico(props: any) {
 
 
+
     const [servicos, setServico] = useState(props.servicos)
-    const [pedido, setPedido] = useState<{ item: { nome: string, duracao: number, valor: number, solicitado: boolean }[] | [], controle: number }>({ item: [], controle: 0 })
+    const [pedido, setPedido] = useState<{
+        item: {
+            nome: string, duracao: number, valor: number, solicitado: boolean
+        }[] | [],
+        controle: number
+    }>({
+        item: props.testePedido ? props.testePedido : [],
+        controle: 0
+
+    })
 
     const selecionou = useCallback(async (item: any, nome: string, duracao: number, valor: number) => { //serviços solicitados
         // console.log({ nome, duracao })
@@ -19,19 +32,21 @@ export default function AgServico(props: any) {
         }
 
         setPedido({ item: auxPedido, controle: Math.floor(Math.random() * 20) })
+        cookieCria('meuPedido', auxPedido)
         // console.log({ pedido })
+
     }, [pedido])
     const alterarPedido = useCallback((item: any) => {
         // console.log(item)
         setPedido({ item: item, controle: Math.floor(Math.random() * 20) })
-    },[pedido])
-    useEffect(() => {
+    }, [pedido])
+    // useEffect(() => {
 
-        console.log('alterando lista de pedido');
-        // return () => {
-        //     console.log('Componente desmontado.');
-        // };
-    }, [pedido]);
+    //     // console.log('alterando lista de pedido');
+    //     // return () => {
+    //     //     console.log('Componente desmontado.');
+    //     // };
+    // }, [pedido]);
 
     return (
         <div className="flex flex-wrap">

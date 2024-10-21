@@ -2,6 +2,7 @@ import { fetchAgendas, fetchAgendaUser, fetchFilteredServicos, fetchServicos } f
 import Calendario from "./calendario";
 import AgServico from "./ag-servico";
 import { useState } from "react";
+import { cookieLe } from "./action";
 
 export default async function Agenda(props: any) {
     let data = new Date()
@@ -10,11 +11,14 @@ export default async function Agenda(props: any) {
     // console.log(mes)
     const agenda = await fetchAgendas(mes, ano);
     const servicos = await fetchServicos();
+    const testePedido = await cookieLe('meuPedido')
+    console.log(testePedido)
+    console.log(typeof([testePedido]))
 
 
     return (
         <div>
-            <AgServico servicos={servicos} agenda={agenda} />
+            <AgServico servicos={servicos} agenda={agenda} testePedido />
             {/* <Calendario dados={agenda} pet={props.pet} servicos={servicos} /> */}
         </div>
 

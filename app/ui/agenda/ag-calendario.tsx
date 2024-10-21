@@ -39,7 +39,7 @@ export default function AgCalendario(props: any) {
 
     }, [props])
     async function selecionaDia(dia: string) {
-        //seleciona users do dia
+        //seleciona users/especialista disponivel do dia
         let pedido = props.pedido.item
         let aux: string[] = []
         let auxag: AgendaUser[] = []
@@ -52,7 +52,7 @@ export default function AgCalendario(props: any) {
                     let teste = false
                     pedido.map((serv: { nome: string, duracao: number, solicitado: boolean }, index: number) => {
                         dias.especialista.map((esp: string) => {
-                            if (serv.nome == esp) {
+                            if (serv.nome == esp && serv.solicitado == false) {
                                 teste = true
                             }
                         })
@@ -234,7 +234,7 @@ export default function AgCalendario(props: any) {
             // props.pedido.item = aux
             // console.log({ teste: props})
             props.funcao(aux)
-            
+
         } else {
             alert("já tem agendamento nesse dia")
         }
