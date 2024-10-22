@@ -56,6 +56,10 @@ export default function AgServico(props: any) {
                     return (
                         <div key={'select' + servico.nome}>
                             <input type="checkbox" name={servico.nome}
+                                {pedido?.item.map(i => {
+                                    i.nome == servico.nome ? i.solicitado : ""
+                                })}
+                                checked={true}
                                 onClick={event => selecionou(event, servico.nome, servico.duracao, servico.valor)} />
                             <label>{servico.nome} - {servico.duracao} - {servico.valor}</label>
                         </div>

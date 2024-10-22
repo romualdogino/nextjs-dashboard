@@ -13,12 +13,12 @@ export default async function Agenda(props: any) {
     const servicos = await fetchServicos();
     const testePedido = await cookieLe('meuPedido')
     console.log(testePedido)
-    console.log(typeof([testePedido]))
+    // console.log(testePedido.length)
 
 
     return (
         <div>
-            <AgServico servicos={servicos} agenda={agenda} testePedido />
+            <AgServico servicos={servicos} agenda={agenda} testePedido={testePedido} />
             {/* <Calendario dados={agenda} pet={props.pet} servicos={servicos} /> */}
         </div>
 
