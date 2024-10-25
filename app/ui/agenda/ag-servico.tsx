@@ -13,7 +13,7 @@ const allToppings = [
     { name: "Black Olives", checked: false },
 ]
 
-export const Checkbox = ({ isChecked, label, checkHandler, index }) => {
+export const Checkbox = ({ isChecked, label, checkHandler, index }: { isChecked: boolean, label: string, checkHandler: () => void, index: number }) => {
     console.log({ isChecked })
     return (
         <div>
@@ -22,6 +22,7 @@ export const Checkbox = ({ isChecked, label, checkHandler, index }) => {
                 id={`checkbox-${index}`}
                 checked={isChecked}
                 onChange={checkHandler}
+                
             />
             <label htmlFor={`checkbox-${index}`}>{label}</label>
         </div>
@@ -56,7 +57,7 @@ export default function AgServico(props: {
         controle: 0
 
     })
-    const updateCheckStatus = index => {
+    const updateCheckStatus = (index: number) => {
         setToppings(
             toppings.map((topping, currentIndex) =>
                 currentIndex === index
@@ -87,10 +88,11 @@ export default function AgServico(props: {
         // console.log({ pedido })
 
     }, [pedido])
+
     const alterarPedido = useCallback((item: any) => {
-        // console.log(item)
         setPedido({ item: item, controle: Math.floor(Math.random() * 20) })
     }, [pedido])
+    
     const testaChecked = (nome: string) => {
         if (nome) {
             pedido.item.map(pe => {
@@ -140,7 +142,7 @@ export default function AgServico(props: {
 
     return (
         <div className="flex flex-wrap">
-            <div className="basis-1/4 md:basis-3/4 sm:basis-3/4 min-w-24">
+            {/* <div className="basis-1/4 md:basis-3/4 sm:basis-3/4 min-w-24">
                 {servicos?.map((
                     servico: any
                 ) => {
@@ -155,7 +157,7 @@ export default function AgServico(props: {
                         </div>
                     )
                 })}
-            </div>
+            </div> */}
             <div className="App">
                 <p>
                     <button onClick={selectAll}>Select All</button>
@@ -172,11 +174,12 @@ export default function AgServico(props: {
                     />
                 ))}
                 <p>
-                    <pre>{JSON.stringify(toppings, null, 2)}</pre>
+                   
                 </p>
             </div>
             <AgCalendario pedido={pedido} funcao={alterarPedido} agenda={props.agenda} />
         </div>
     )
+    // <pre>{JSON.stringify(toppings, null, 2)}</pre>
 
 }
