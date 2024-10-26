@@ -4,12 +4,24 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { use, useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { cookieCria, cookieLe } from './agenda/action';
 
 export default function PesquisaPets({ placeholder, query }: { placeholder: string, query: string }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const [petAtivo, setPetAtivo] = useState(localStorage.getItem('petAtivo') ? localStorage.getItem('petAtivo') : '');
+  // const [petAtivo, setPetAtivo] = useState(localStorage.getItem('petAtivo') ? localStorage.getItem('petAtivo') : '');
+  const [petAtivo, setPetAtivo] = useState<string | null>(null);
+
+  useEffect(() => {
+      const fetchPetAtivo = async () => {
+          const cookie = await cookieLe('petAtivo');
+          if (cookie && typeof cookie === 'object' && 'petAtivo' in cookie) {
+              setPetAtivo(cookie.petAtivo as string);
+          }
+      };
+      fetchPetAtivo();
+  }, [query]);
 
   const handleSearch = useDebouncedCallback((term) => {
     // console.log(`Searching... ${term}`);
@@ -23,9 +35,9 @@ export default function PesquisaPets({ placeholder, query }: { placeholder: stri
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
-  useEffect(() => {
-    setPetAtivo(localStorage.getItem('petAtivo'))
-  }, [query])
+  // useEffect(() => {
+  //   setPetAtivo(localStorage.getItem('petAtivo'))
+  // }, [query])
 
 
   if (petAtivo) {
@@ -39,6 +51,7 @@ export default function PesquisaPets({ placeholder, query }: { placeholder: stri
             localStorage.removeItem('petNome');
             localStorage.removeItem('tutorId');
             setPetAtivo(null);
+            cookieCria('petAtivo',[])
           }}
           className="bg-red-500 hover:bg-red-600 text-white rounded-full p-1"
           aria-label="Fechar"

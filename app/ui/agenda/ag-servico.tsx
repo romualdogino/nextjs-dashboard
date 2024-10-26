@@ -2,19 +2,14 @@
 import { useCallback, useEffect, useState } from "react"
 import AgCalendario from "./ag-calendario"
 import { number } from "zod"
-import { cookieCria } from "./action"
+import { cookieCria, cookieDelete } from "./action"
 
-const allToppings = [
-    { name: "Golden Corn", checked: false },
-    { name: "Paneer", checked: false },
-    { name: "Tomato", checked: true },
-    { name: "Mushroom", checked: false },
-    { name: "Onion", checked: true },
-    { name: "Black Olives", checked: false },
-]
-
-export const Checkbox = ({ isChecked, label, checkHandler, index }: { isChecked: boolean, label: string, checkHandler: () => void, index: number }) => {
-    console.log({ isChecked })
+export const Checkbox = ({
+    isChecked, label, checkHandler, index
+}: {
+    isChecked: boolean, label: string, checkHandler: () => void, index: number
+}) => {
+    // console.log({ isChecked })
     return (
         <div>
             <input
@@ -22,30 +17,28 @@ export const Checkbox = ({ isChecked, label, checkHandler, index }: { isChecked:
                 id={`checkbox-${index}`}
                 checked={isChecked}
                 onChange={checkHandler}
-                
+
             />
             <label htmlFor={`checkbox-${index}`}>{label}</label>
         </div>
     )
 }
 
-
 export default function AgServico(props: {
     servicos: {
         id: string,
         nome: string,
-        // checked: boolean,
         descricao: string,
         duracao: number,
-        procedimento: null
+        procedimento: string,
+        valor: number,
         createdAt: Date,
         updatedAt: Date
+        checked: boolean,
     }[], testePedido: any, agenda: any
 }) {
-    const [toppings, setToppings] = useState(allToppings)
-
     //serviços disponíveis
-    const [servicos, setServico] = useState(props.servicos)
+    const [servicos, setServicos] = useState(props.servicos)
     //servíços escolhidos
     const [pedido, setPedido] = useState<{
         item: {
@@ -57,27 +50,46 @@ export default function AgServico(props: {
         controle: 0
 
     })
-    const updateCheckStatus = (index: number) => {
-        setToppings(
-            toppings.map((topping, currentIndex) =>
-                currentIndex === index
-                    ? { ...topping, checked: !topping.checked }
-                    : topping
-            )
-        )
+    // console.log({ servicos })
+    const checkPedido= (nome:string)=>{
+        pedido.item.map(ped=>{
+            if(ped.nome == nome){
+                // console.log
+                return ped.solicitado
+            }
+        })
+
+    }
+    const updateCheckStatusServico = (index: number) => {
+        let nome = ""
+        setServicos(
+            servicos.map((serv, currentIndex) => {
+                if (currentIndex === index) {
+                    nome = serv.nome;
+                    selecionou(!serv.checked, serv.nome, serv.duracao, serv.valor);
+                    return { ...serv, checked: !serv.checked };
+                } else {
+                    return serv;
+                }
+            }))
+
+        // console.log(nome)
+        // console.log({ pedido })
     }
     const selectAll = () => {
-        setToppings(toppings.map(topping => ({ ...topping, checked: true })))
+        //nao impementado
+        setServicos(servicos.map(topping => ({ ...topping, checked: true })))
     }
     const unSelectAll = () => {
-        setToppings(toppings.map(topping => ({ ...topping, checked: false })))
+        setServicos(servicos.map(topping => ({ ...topping, checked: false })))
+        cookieCria('meuPedido', [])
     }
 
 
-    const selecionou = useCallback(async (item: any, nome: string, duracao: number, valor: number) => { //serviços solicitados
+    const selecionou = useCallback(async (checked: boolean, nome: string, duracao: number, valor: number) => { //serviços solicitados
         // console.log({ nome, duracao })
         let auxPedido: { nome: string, duracao: number, valor: number, solicitado: boolean }[] = pedido?.item
-        if (item.target.checked) {
+        if (checked) {
             auxPedido.push({ nome, duracao, valor, solicitado: false })
         } else {
             auxPedido.splice(auxPedido.findIndex((v: { nome: string }) => v.nome == nome), 1)
@@ -90,9 +102,10 @@ export default function AgServico(props: {
     }, [pedido])
 
     const alterarPedido = useCallback((item: any) => {
+        cookieCria('meuPedido', item)
         setPedido({ item: item, controle: Math.floor(Math.random() * 20) })
     }, [pedido])
-    
+
     const testaChecked = (nome: string) => {
         if (nome) {
             pedido.item.map(pe => {
@@ -108,26 +121,24 @@ export default function AgServico(props: {
     }
 
 
-    // setTimeout(() => {
-
-    //     console.log({ servicos, pedido })
-    // }, 1000);
-
     useEffect(() => {
-        if (servicos[0]) {
-            setServico(servicos.map((serv: {
-                id: string,
-                nome: string,
-                descricao: string,
-                duracao: number,
-                procedimento: null,
-                createdAt: Date,
-                updatedAt: Date
-            }) => ({
-                ...serv,
-                checked: testaChecked(serv.nome)
-            })))
-        }
+        // if (servicos[0]) {
+        //     setServicos(servicos.map((serv: {
+        //         id: string,
+        //         nome: string,
+        //         descricao: string,
+        //         duracao: number,
+        //         procedimento: null,
+        //         createdAt: Date,
+        //         updatedAt: Date
+        //     }) => ({
+        //         ...serv,
+        //         checked: testaChecked(serv.nome)
+        //     })))
+        // }
+
+
+
         // servicos.map(ser=>{
         //     ser.
         // })
@@ -142,39 +153,24 @@ export default function AgServico(props: {
 
     return (
         <div className="flex flex-wrap">
-            {/* <div className="basis-1/4 md:basis-3/4 sm:basis-3/4 min-w-24">
-                {servicos?.map((
-                    servico: any
-                ) => {
-                    // console.log(servico)
-                    return (
-                        <div key={'select' + servico.nome}>
-                            <input type="checkbox" name={servico.nome}
 
-                                checked={servico.checked}
-                                onClick={event => selecionou(event, servico.nome, servico.duracao, servico.valor)} />
-                            <label>{servico.nome} - {servico.duracao} - {servico.valor}</label>
-                        </div>
-                    )
-                })}
-            </div> */}
             <div className="App">
                 <p>
-                    <button onClick={selectAll}>Select All</button>
+                    {/* <button onClick={selectAll}>Select All</button> */}
                     <button onClick={unSelectAll}>Unselect All</button>
                 </p>
-
-                {toppings.map((topping, index) => (
+                {servicos.map((serv, index) => (
                     <Checkbox
-                        key={topping.name}
-                        isChecked={topping.checked}
-                        checkHandler={() => updateCheckStatus(index)}
-                        label={topping.name}
+                        key={serv.nome}
+                        isChecked={serv.checked}
+                        checkHandler={() => updateCheckStatusServico(index)}
+                        label={serv.nome}
                         index={index}
                     />
                 ))}
+
                 <p>
-                   
+
                 </p>
             </div>
             <AgCalendario pedido={pedido} funcao={alterarPedido} agenda={props.agenda} />

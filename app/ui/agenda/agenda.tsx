@@ -12,13 +12,28 @@ export default async function Agenda(props: any) {
     const agenda = await fetchAgendas(mes, ano);
     const servicos = await fetchServicos();
     const testePedido = await cookieLe('meuPedido')
-    console.log(testePedido)
-    // console.log(testePedido.length)
-
-
+    const testePet = await cookieLe('petAtivo')
+    // console.log({ testePedido })
+    // console.log({ qtd: testePedido?.length || 0 })
+    // console.log(servicos)
+    function testarPedidosCoockies() {
+        servicos.forEach(servico => {
+            if (testePedido && Array.isArray(testePedido)) {
+                testePedido.forEach((ped: { nome: string; solicitado: boolean }) => {
+                    if (ped.nome === servico.nome) {
+                        servico.checked = !ped.solicitado;
+                    }
+                });
+            }
+        });
+    }
+    testarPedidosCoockies()
     return (
         <div>
-            <AgServico servicos={servicos} agenda={agenda} testePedido={testePedido} />
+            <AgServico servicos={servicos.map(servico => ({
+                ...servico,
+                procedimento: servico.procedimento || ''
+            }))} agenda={agenda} testePedido={testePedido} />
             {/* <Calendario dados={agenda} pet={props.pet} servicos={servicos} /> */}
         </div>
 

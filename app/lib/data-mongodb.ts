@@ -55,7 +55,7 @@ async function updateAgentamento(id: string, agendamento: any) {
         push: agendamento.agenda,
         // sort: 'asc',
         // fields: ['hora']
-        
+
       },
     }
   })
@@ -152,8 +152,19 @@ export async function updateAgenda(item) {
 }
 export async function fetchServicos() {
 
-  const user = await prisma.servico.findMany()
-  return user
+  const servicos = await prisma.servico.findMany()
+  const lista: {
+    checked: boolean;
+    id: string;
+    nome: string;
+    descricao: string;
+    procedimento: string | null;
+    duracao: number;
+    valor: number;
+    createdAt: Date;
+    updatedAt: Date;
+  }[] = servicos.map(serv => ({ ...serv, checked: false }))
+  return lista
 
 }
 export async function fetchPet(nome: string | null | undefined) {

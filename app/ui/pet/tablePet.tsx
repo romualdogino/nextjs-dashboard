@@ -7,6 +7,7 @@ import { fetchPesquisaPets } from '@/app/lib/data-mongodb';
 import { use, useEffect, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { cookieCria, cookieLe } from '../agenda/action';
 
 export default function PesquisaPetTable({
     // funcao,
@@ -25,18 +26,41 @@ export default function PesquisaPetTable({
     //     selecaoPet;
     //     console.log(id);
     // };
-console.log({listaPet})
+// console.log({listaPet})
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
 
-    const [petAtivo, setPetAtivo] = useState(localStorage.getItem('petAtivo') ? localStorage.getItem('petAtivo') : null);
+    // const [petAtivo, setPetAtivo] = useState(localStorage.getItem('petAtivo') ? localStorage.getItem('petAtivo') : null);
+    const [petAtivo, setPetAtivo] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchPetAtivo = async () => {
+            const cookie = await cookieLe('petAtivo');
+            if (cookie && typeof cookie === 'object' && 'petAtivo' in cookie) {
+                setPetAtivo(cookie.petAtivo as string);
+            }
+        };
+        fetchPetAtivo();
+    }, []);
     // console.log({ listaPet })
     const mudarPet = (id: string, nome: string, tutorId: string) => {
         // localStorage.setItem('petAtivo', id)
+        cookieCria('petAtivo',{petAtivo: id,petNome:nome, tutorId})
+
+
+
+
+
+
+    
         localStorage.setItem('petAtivo', id)
         localStorage.setItem('petNome', nome)
         localStorage.setItem('tutorId', tutorId)
+
+
+
+
 
         const params = new URLSearchParams(searchParams);
         // params.delete('query');
@@ -49,9 +73,9 @@ console.log({listaPet})
 
 
 
-    useEffect(() => {
-        setPetAtivo(localStorage.getItem('petAtivo'));
-    }, [listaPet])
+    // useEffect(() => {
+    //     setPetAtivo(localStorage.getItem('petAtivo'));
+    // }, [listaPet])
 
     return (
         <div key={0} className='flex w-full gap-2 absolute mt-32 bg-slate-300 rounded-lg'>

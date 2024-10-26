@@ -65,8 +65,8 @@ export default function AgCalendario(props: any) {
             })
         })
 
-        setUser({ item: aux as any[], marcador: Math.floor(Math.random() * 20) })
-        setListaUser({ item: auxag as any[], marcador: Math.floor(Math.random() * 20) })
+        setUser({ item: aux, marcador: Math.floor(Math.random() * 20) })
+        setListaUser({ item: auxag, marcador: Math.floor(Math.random() * 20) })
         setDetalhes({ item: null, marcador: Math.floor(Math.random() * 20) })
         // console.log({ auxag, aux })
         // console.log({ lista })
@@ -135,7 +135,7 @@ export default function AgCalendario(props: any) {
                                 rounded-md shadow-sm ring-1 ring-slate-900/5
                                  border-indigo-500 hover:bg-blue-300 hover:border-blue-700 dark:border-sky-500 border-2 border-solid
                                  " onClick={() => Agendar(hora, props.agenda.mes,
-                                        detalhes.item?.nome, dia, detalhes.item?.especialista)}>
+                                        detalhes.item?.nome || '', dia, detalhes.item?.especialista)}>
                                         agendar
                                     </button>
                                 </p>
@@ -233,6 +233,8 @@ export default function AgCalendario(props: any) {
             })
             // props.pedido.item = aux
             // console.log({ teste: props})
+
+            //criar compra e com vinculo para as agendas
             props.funcao(aux)
 
         } else {

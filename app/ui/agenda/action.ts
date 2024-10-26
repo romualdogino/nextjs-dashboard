@@ -1,5 +1,8 @@
 'use server'
 import { cookies } from "next/headers";
+export async function cookieDelete(nome: string) {
+  cookies().delete(nome);
+}
 
 export async function cookieCria(nome: string, valor: any) {
     if (typeof (valor) != 'string') {
