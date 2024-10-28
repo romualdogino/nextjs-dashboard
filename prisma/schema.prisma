@@ -13,6 +13,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Pedido {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  clienteId String       @db.ObjectId
+  cliente   String
+  ativo     Boolean
+  lista     Referencia[]
+}
+type Referencia{
+  dia Int
+  mes Int
+  ano Int
+  pedido ListaAgenda[]
+}
+
 model Compra {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
   clienteId   String        @db.ObjectId
@@ -186,7 +200,7 @@ type ListaAgenda {
   pagamento   String?
   obs         String?
   compraId    String?
-  createdAt   DateTime      @default(now())
+  createdAt   DateTime       @default(now())
 }
 
 type ListaServico {

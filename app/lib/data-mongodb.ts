@@ -35,6 +35,7 @@ export async function postAgendamento(agendamento: any) {
     } else {
       //inicia o db
       let ag = await criarAgentamento(agendamento)
+      // let pedido = await criarPedido(agendamento)
       return ag
 
     }
@@ -45,6 +46,20 @@ export async function postAgendamento(agendamento: any) {
   }
 
 }
+// async function criarPedido(agendamento: any) {
+//   const ag = await prisma.pedido.create({
+//     data: {
+//       dia: agendamento.dia,
+//       mes: agendamento.mes,
+//       ano: agendamento.ano,
+//       agenda: [{
+
+//         ...agendamento.agenda
+//       }],
+//     }
+//   })
+//   return ag
+// }
 async function updateAgentamento(id: string, agendamento: any) {
   const atualizado = await prisma.agendamento.update({
     where: {
