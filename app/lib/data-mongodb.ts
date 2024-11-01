@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { json } from 'stream/consumers';
-import { boolean, string } from 'zod';
+import { boolean, date, string } from 'zod';
 import { JsonValue } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient()
@@ -25,11 +25,11 @@ export async function postAgendamento(agendamento: any) {
     // console.log({ teste })
     if (teste) {
 
-      const alterar = await updateAgentamento(teste.id, agendamento)
+      // const alterar = await updateAgentamento(teste.id, agendamento)
       // console.log(alterar)
+      let pedido = await criarPedido(agendamento)
 
-
-      return alterar
+      // return alterar
 
 
     } else {
@@ -46,20 +46,75 @@ export async function postAgendamento(agendamento: any) {
   }
 
 }
-// async function criarPedido(agendamento: any) {
-//   const ag = await prisma.pedido.create({
-//     data: {
-//       dia: agendamento.dia,
-//       mes: agendamento.mes,
-//       ano: agendamento.ano,
-//       agenda: [{
+async function criarPedido(agendamento: any) {
+  var teste = await prisma.pedido.findFirst({
+    where: {
+      clienteId: agendamento.agenda.clienteId,
+      ativo: true
+    }
+  })
+  if (teste) {
+    //atualizar
+    teste.lista.push({
+      dia: agendamento.dia,
+      mes: agendamento.mes,
+      ano: agendamento.ano,
+      pedido: [{
+        userId: agendamento.agenda.userId,
+        user: agendamento.agenda.user,
+        clienteId: agendamento.agenda.clienteId,
+        cliente: agendamento.agenda.cliente,
+        petId: agendamento.agenda.petId,
+        pet: agendamento.agenda.pet,
+        servico: agendamento.agenda.servico,
+        hora: agendamento.agenda.hora,
+        horachegada: agendamento.agenda.horachegada,
+        horasaida: agendamento.agenda.horasaida,
+        tempoTotal: agendamento.agenda.tempoTotal,
+        valorTotal: agendamento.agenda.valorTotal,
+        pagamento: agendamento.agenda.pagamento,
+        obs: "",
+        compraId: "",
+        createdAt: new Date(),
 
-//         ...agendamento.agenda
-//       }],
-//     }
-//   })
-//   return ag
-// }
+      }]
+    })
+
+
+  } else {
+    //criar
+    const pedido = await prisma.pedido.create({
+      data: {
+        clienteId: agendamento.agenda.clienteId,
+        cliente: agendamento.agenda.cliente,
+        ativo: true,
+        lista: [{
+          dia: agendamento.dia,
+          mes: agendamento.mes,
+          ano: agendamento.ano,
+          pedido: [{
+            userId: agendamento.agenda.userId,
+            user: agendamento.agenda.user,
+            clienteId: agendamento.agenda.clienteId,
+            cliente: agendamento.agenda.cliente,
+            petId: agendamento.agenda.petId,
+            pet: agendamento.agenda.pet,
+            servico: agendamento.agenda.servico,
+            hora: agendamento.agenda.hora,
+            horachegada: agendamento.agenda.horachegada,
+            horasaida: agendamento.agenda.horasaida,
+            tempoTotal: agendamento.agenda.tempoTotal,
+            valorTotal: agendamento.agenda.valorTotal,
+            pagamento: agendamento.agenda.pagamento,
+            obs: "",
+          }]
+        }]
+      }
+    })
+    return pedido
+  }
+
+}
 async function updateAgentamento(id: string, agendamento: any) {
   const atualizado = await prisma.agendamento.update({
     where: {
