@@ -11,7 +11,16 @@ import { boolean, date, string } from 'zod';
 import { JsonValue } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient()
-
+export async function fetchClientePedido(clienteId : string){
+// console.log({clienteId})
+const pedido = await prisma.pedido.findFirst({
+  where:{
+    clienteId,
+    ativo: true
+  }
+})
+return pedido
+}
 export async function postAgendamento(agendamento: any) {
   // console.log({ agendamento })
   try {
@@ -24,18 +33,19 @@ export async function postAgendamento(agendamento: any) {
     })
     // console.log({ teste })
     if (teste) {
-
-      // const alterar = await updateAgentamento(teste.id, agendamento)
+      console.log("achou teste")
+      const alterar = await updateAgentamento(teste.id, agendamento)
       // console.log(alterar)
       let pedido = await criarPedido(agendamento)
 
       // return alterar
-
+      return pedido
 
     } else {
+      console.log("não achou ... criar")
       //inicia o db
       let ag = await criarAgentamento(agendamento)
-      // let pedido = await criarPedido(agendamento)
+      let pedido = await criarPedido(agendamento)
       return ag
 
     }
@@ -47,15 +57,15 @@ export async function postAgendamento(agendamento: any) {
 
 }
 async function criarPedido(agendamento: any) {
-  var teste = await prisma.pedido.findFirst({
+  var p1 = await prisma.pedido.findFirst({
     where: {
       clienteId: agendamento.agenda.clienteId,
       ativo: true
     }
   })
-  if (teste) {
+  if (p1) {
     //atualizar
-    teste.lista.push({
+    p1.lista.push({
       dia: agendamento.dia,
       mes: agendamento.mes,
       ano: agendamento.ano,
@@ -79,7 +89,14 @@ async function criarPedido(agendamento: any) {
 
       }]
     })
-
+    const upPedido = await prisma.pedido.update({
+      where: {
+        id: p1.id
+      },
+      data: { lista: p1.lista }
+    })
+    console.log("atualizado")
+    return upPedido
 
   } else {
     //criar

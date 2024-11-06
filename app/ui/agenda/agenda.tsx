@@ -1,4 +1,4 @@
-import { fetchAgendas, fetchAgendaUser, fetchFilteredServicos, fetchServicos } from "@/app/lib/data-mongodb";
+import { fetchAgendas, fetchAgendaUser, fetchClientePedido, fetchFilteredServicos, fetchServicos } from "@/app/lib/data-mongodb";
 import Calendario from "./calendario";
 import AgServico from "./ag-servico";
 import { useState } from "react";
@@ -13,7 +13,11 @@ export default async function Agenda(props: any) {
     const servicos = await fetchServicos();
     const testePedido = await cookieLe('meuPedido')
     const testePet = await cookieLe('petAtivo')
-    // console.log({ testePedido })
+    const clientePedidos = await fetchClientePedido(testePet.tutorId)
+    console.log({ testePedido })
+    console.log({ testePet })
+    console.log({ clientePedidos })
+
     // console.log({ qtd: testePedido?.length || 0 })
     // console.log(servicos)
     function testarPedidosCoockies() {
