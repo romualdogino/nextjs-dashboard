@@ -1,6 +1,7 @@
 'use client'
 import { useState } from "react"
 import Agenda from "./agenda"
+import { updateAgenda } from "@/app/lib/data-mongodb"
 type Dias = [{
     dia: string,
     ative: boolean
@@ -29,6 +30,7 @@ export default function Calendario(props: any) {
     const [horas, setHoras] = useState([])
     const [pet, setPet] = useState(props.pet)
     const [servicos, setServico] = useState(props.servicos)
+    const [pedido, setPedido] = useState([])
     // console.log(dias)
     // console.log(hoje)
     async function clicou(dia: string) {
@@ -52,7 +54,7 @@ export default function Calendario(props: any) {
 
         })
         setListaUser([...teste])
-        console.log([listaUser])
+        // console.log([listaUser])
 
     }
     async function mostraAgendas(nome: Agenda) {
@@ -74,14 +76,51 @@ export default function Calendario(props: any) {
         return array
 
     }
+    function selecionou(item: any, nome: string, duracao: number) {
+        console.log({ nome, duracao })
+        let auxPedido = pedido
+        if (item.target.checked) {
+
+            auxPedido.push({ nome, duracao, solicitado: false })
+        } else {
+
+            auxPedido.splice(auxPedido.findIndex(v => v.nome == nome), 1)
+        }
+
+
+        setPedido(auxPedido)
+        console.log({ pedido })
+
+    }
+    async function agendarHora(hora: number, nome: string, dia: string, especialista: []) {
+        console.log({ hora, dia, especialista })
+        let arquivo = {
+            hora,
+            dia,
+            mes: props.dados.mes,
+            ano: props.dados.ano,
+            nome: nome,
+            especialista,
+            pet: pet.nome
+            // tempo: calcular tempo total e os respectivos serviços
+        }
+
+        let resp = await updateAgenda(arquivo)
+        console.log({ resp })
+    }
     return (
         <main>
             calendário
             <p>agendar para : <strong>{pet ? pet.nome : ''}</strong></p>
             selecionar servicos:
             {servicos?.map((servico: any) => {
+                // console.log(servico)
                 return (
-                    <p> {servico.nome} </p>
+
+                    <div key={'select' + servico.nome}>
+                        <input type="checkbox" name={servico.nome} onClick={event => selecionou(event, servico.nome, servico.duracao)} />
+                        <label>{servico.nome} - {servico.duracao}</label>
+                    </div>
                 )
             })}
             <div className="calview">
@@ -129,15 +168,49 @@ export default function Calendario(props: any) {
                             <p>{a.horaintervaloinicial}</p>
                             <p>{a.horaintervalofinal}</p>
                             <p>{a.horafinal}</p>
-                            <p>agenda:{a.agenda.map((ag: any, i: number) => ag)}</p>
-                            <div id="horas">
-                                {horas.map((h: any, index) => {
+                            <p>agenda:{a.agenda.map((ag: any, i: number) => { 
+                                console.log(a)
+                                return(<>
+                                {ag.pet}
+                                {ag.hora}
+                                </>) })
+                                }</p>
+                            {
+                                pedido?.map(async serv => {
+
+                                    if (a.especialista) {
+                                        console.log("foi")
+                                        let teste = await a.especialista.findIndex(es => es == serv.nome)
+                                        if (teste == -1) {
+                                            return ("não pode agendar selecione serviço")
+                                        } else {
+                                            return (<>
+                                                {horas.map((h: any, index) => {
+                                                    return (
+                                                        <p key={h}>
+                                                            {(Math.floor(h / 60)).toString().padStart(2, '0')}:{(((h / 60) - Math.floor(h / 60)) * 60).toString().padStart(2, '0')}
+                                                            | {h >= a.horaintervaloinicial && h < a.horaintervalofinal
+                                                                ? (<b style={{ color: 'red' }}>reservado</b>)
+                                                                : (<button onClick={() => {
+                                                                    console.log(h)
+                                                                    agendarHora(h, a.nome, a.dia, a.especialista)
+                                                                }}>agendar</button>)}
+                                                        </p>)
+                                                })}
+                                            </>)
+
+                                        }
+
+                                    }
                                     return (
-                                        <p key={h}>
-                                            {(Math.floor(h / 60)).toString().padStart(2, '0')}:{(((h / 60) - Math.floor(h / 60)) * 60).toString().padStart(2, '0')}
-                                            | {h >= a.horaintervaloinicial && h < a.horaintervalofinal ? (<b style={{ color: 'red' }}>reservado</b>) : (<button onClick={() => { console.log(h) }}>agendar</button>)}
-                                        </p>)
-                                })}
+                                        <> nada</>
+                                    )
+                                })
+                            }
+                            
+                            <div id="horas">
+
+
                             </div>
 
                         </div>
@@ -145,6 +218,6 @@ export default function Calendario(props: any) {
                 })}
             </div>
 
-        </main>
+        </main >
     )
 }

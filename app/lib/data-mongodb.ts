@@ -11,18 +11,55 @@ import { boolean, string } from 'zod';
 import { JsonValue } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient()
+export async function updateAgenda(item) {
+  //   {
+  //     hora,
+  //     dia,
+  //     mes: props.dados.mes,
+  //     ano: props.dados.ano,
+  //     nome: nome,
+  //     especialista,
+  // }
+  // console.log(item)
+  var agenda = await prisma.agenda.findFirst({
+    where: { mes: item.mes, ano: item.ano }
+  })
+  agenda?.users?.map((ag: any) => {
+    if (ag.nome == item.nome) {
+      ag.dias.map((d: any) => {
+        if (d.dia == item.dia) {
+          d.agenda.push({
+            hora: item.hora,
+            pet: item.pet,
+            servico: item.especialista,
+            tempo: item.tempo
+          })
+        }
+      })
+    }
+  })
+  if (agenda) {
+    const resp = await prisma.agenda.update({
+      where: { id: agenda.id },
+      data: { users: agenda?.users }
+    })
+
+    return resp
+  }
+  // console.log(agenda?.users[0].dias[item.dia - 1].agenda)
+}
 export async function fetchServicos() {
-  
-    const user = await prisma.servico.findMany()
-    return user
-  
+
+  const user = await prisma.servico.findMany()
+  return user
+
 }
 export async function fetchPet(nome: string | null | undefined) {
   if (typeof nome == "string") {
     const user = await prisma.pet.findFirst({
       where: { id: nome },
       select: {
-     
+
         nome: true,
         id: true
       }
